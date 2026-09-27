@@ -1,28 +1,49 @@
 {{ define "main" }}
-<article class="post wrap-narrow">
-  <header class="post-head">
-    <a class="back" href="{{ "incidents/" | relLangURL }}">← {{ i18n "back_all" }}</a>
-    <h1>{{ .Title }}</h1>
-    {{- with .Params.summary }}<p class="lede">{{ . }}</p>{{ end }}
-    <p class="post-meta muted small">
+{{- /* Bölüm sırası sabit: 1 olay, 2-4 saldırı (kırmızı), 5 savunma (mavi), 6 purple. */}}
+{{- $lanes := slice "ink" "ink" "red" "red" "red" "blue" "purple" }}
+<article class="post">
+  <header class="wrap post-head">
+    <p class="dateline">
+      <a href="{{ "incidents/" | relLangURL }}">← {{ i18n "back_all" }}</a>
       <span>{{ i18n "published" }} <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time></span>
-      {{- if gt .Lastmod .Date }}{{ if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}
+      {{- if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}
       <span>{{ i18n "updated" }} <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod | time.Format ":date_long" }}</time></span>
-      {{- end }}{{ end }}
+      {{- end }}
       <span>{{ .ReadingTime }} {{ i18n "reading_time" }}</span>
       {{- range .Translations }}
-      <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ i18n "other_lang" }}</a>
+      <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.Lang }}">{{ i18n "other_lang" }} →</a>
       {{- end }}
     </p>
-    {{ partial "chips.html" (dict "page" .) }}
+    <div class="kicker">
+      {{- range first 1 (.Params.buckets | default slice) }}<span class="bucket bucket-{{ . }}">{{ i18n (printf "bucket_%s" .) }}</span>{{ end }}
+      {{ partial "sevmeter.html" .Params.severity }}
+    </div>
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- with .Params.summary }}<p class="deck post-deck">{{ . }}</p>{{ end }}
+    <p class="byline">{{ site.Params.author }}</p>
   </header>
 
-  {{ partial "infobox.html" . }}
-
-  <div class="prose numbered">
-    {{ .Content }}
+  <div class="wrap post-grid">
+    <div class="post-side">
+      {{ partial "infobox.html" . }}
+    </div>
+    <div class="post-main">
+      {{ partial "chain.html" . }}
+      <div class="prose">
+        {{- $parts := split .Content "<h2" }}
+        {{- range $i, $part := $parts }}
+          {{- if eq $i 0 }}{{ $part | safeHTML }}
+          {{- else }}
+            {{- $lane := index $lanes (cond (lt $i 7) $i 6) }}
+        <section class="lane lane-{{ $lane }}">
+          <p class="lane-tag"><span class="n">{{ printf "%02d" $i }}</span><span>{{ i18n (printf "lane_%s" $lane) }}</span></p>
+          {{ printf "<h2%s" $part | safeHTML }}
+        </section>
+          {{- end }}
+        {{- end }}
+      </div>
+      {{ partial "sources.html" . }}
+    </div>
   </div>
-
-  {{ partial "sources.html" . }}
 </article>
 {{ end }}

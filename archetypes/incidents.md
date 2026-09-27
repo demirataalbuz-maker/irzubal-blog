@@ -12,6 +12,9 @@ cve: ""                          # varsa; yoksa sil
 buckets: ["ai-system-vulnerability"]   # ai-as-attacker | ai-system-vulnerability
 owasp: ["LLM01"]                 # data/owasp.yaml'daki kimlikler
 atlas: ["AML.T0051.001"]         # data/atlas.yaml'daki kimlikler
+chain:                           # saldırı zinciri: her adımda saldırı + onu kıracak savunma
+  - attack: ""
+    defense: ""
 sources:
   - publisher: ""
     title: ""

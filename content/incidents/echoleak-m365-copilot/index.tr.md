@@ -11,6 +11,17 @@ cve: "CVE-2025-32711"
 buckets: ["ai-system-vulnerability"]
 owasp: ["LLM01", "LLM02", "LLM05"]
 atlas: ["AML.T0051.001", "AML.T0068", "AML.T0057", "AML.T0077"]
+chain:
+  - attack: "Saldırgan, iş notu gibi görünen bir e-posta gönderir. Talimatlar, e-postayı okuyan insana yazılmış cümlelere gömülüdür."
+    defense: "Kuruluş dışından gelen e-posta, iç verilerle aynı bağlama alınmaz ya da açıkça \"güvenilmeyen kaynak\" olarak işaretlenir."
+  - attack: "Kullanıcı Copilot'a ilgili bir iş sorusu sorar; Copilot e-postayı alakalı bulup bağlama çeker."
+    defense: "Bağlama giren her parça kaynağıyla etiketlenir; dış kaynaktan gelen metin talimat olarak işlenmez."
+  - attack: "XPIA sınıflandırıcısı talimatları insana yazılmış sanıp zararsız sayar."
+    defense: "Tek bir sınıflandırıcıya güvenilmez: giriş denetimi, çıktı denetimi ve ağ kısıtı ayrı katmanlar olarak çalışır."
+  - attack: "Model hassas veriyi referans biçimli bir görsel adresine gömer; bağlantı filtresi yalnızca satır içi biçimi tanıdığı için geçirir."
+    defense: "Yanıtta dış adrese giden her bağlantı ve görsel, yazım biçiminden bağımsız kaldırılır (kara liste değil beyaz liste)."
+  - attack: "Tarayıcı görseli kendiliğinden ister; istek izinli Teams önizleme servisi üzerinden saldırganın sunucusuna ulaşır."
+    defense: "CSP izin listesinde başka adres çağıran servis bırakılmaz; yanıtlardaki dış adresler ve çıkış trafiği izlenip uyarı üretir."
 sources:
   - publisher: "Microsoft MSRC"
     title: "CVE-2025-32711: M365 Copilot Information Disclosure Vulnerability"

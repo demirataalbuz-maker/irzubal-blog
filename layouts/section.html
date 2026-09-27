@@ -1,10 +1,11 @@
 {{ define "main" }}
 <section class="wrap page-head">
-  <h1>{{ .Title }}</h1>
-  <p class="lede">{{ i18n "incidents_lede" }}</p>
+  <p class="dateline"><span>{{ len .Pages }} {{ i18n "stat_incidents" }}</span></p>
+  <h1 class="page-title">{{ .Title }}</h1>
+  <p class="page-lede">{{ i18n "incidents_lede" }}</p>
 </section>
 <section class="wrap">
-  <div class="cards">
+  <div class="stories">
     {{- range .Pages }}{{ partial "card.html" . }}{{ end }}
   </div>
 </section>

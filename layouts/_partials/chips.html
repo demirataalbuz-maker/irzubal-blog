@@ -1,14 +1,11 @@
-{{- /* Etiket çipleri. Her çip filtre sayfasına o etiket seçili olarak gider. */ -}}
+{{- /* Etiket çipleri. Her çip dizin sayfasına o etiket seçili olarak gider. OWASP kırmızı değil nötr; ATLAS teknikleri de öyle. */ -}}
 {{- $p := .page }}
 {{- $tags := "tags/" | relLangURL }}
 <ul class="chips" role="list">
-  {{- range $p.Params.buckets }}
-  <li><a class="chip chip-bucket" href="{{ $tags }}?f=buckets:{{ . }}">{{ i18n (printf "bucket_%s" .) }}</a></li>
-  {{- end }}
   {{- range $p.Params.owasp }}
   <li><a class="chip" href="{{ $tags }}?f=owasp:{{ . }}" title="{{ index hugo.Data.owasp . site.Language.Lang }}">{{ . }}</a></li>
   {{- end }}
   {{- range $p.Params.atlas }}
-  <li><a class="chip chip-mono" href="{{ $tags }}?f=atlas:{{ . }}" title="{{ index hugo.Data.atlas . }}">{{ . }}</a></li>
+  <li><a class="chip" href="{{ $tags }}?f=atlas:{{ . }}" title="{{ index hugo.Data.atlas . }}">{{ . }}</a></li>
   {{- end }}
 </ul>

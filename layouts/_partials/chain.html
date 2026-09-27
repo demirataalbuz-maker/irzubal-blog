@@ -1,0 +1,23 @@
+{{- /* Saldırı zinciri: solda kırmızı adımlar, ortada ray, sağda mavi kesme noktası. Ön bilgide chain: [{attack, defense}] */ -}}
+{{- with .Params.chain }}
+<figure class="chain" aria-labelledby="chain-h">
+  <figcaption>
+    <span class="chain-title" id="chain-h">{{ i18n "chain_title" }}</span>
+    <span class="chain-note">{{ i18n "chain_note" }}</span>
+  </figcaption>
+  <div class="chain-head" aria-hidden="true">
+    <span class="ch-atk">{{ i18n "chain_attack" }}</span>
+    <span></span>
+    <span class="ch-def">{{ i18n "chain_defense" }}</span>
+  </div>
+  <ol class="chain-list" role="list">
+    {{- range $i, $s := . }}
+    <li class="link">
+      <div class="atk"><span class="n">{{ printf "%02d" (add $i 1) }}</span><p>{{ $s.attack | markdownify }}</p></div>
+      <div class="rail" aria-hidden="true"><i class="node"></i><i class="cut"></i></div>
+      <div class="def"><span class="sr-only">{{ i18n "chain_defense" }}: </span><p>{{ $s.defense | markdownify }}</p></div>
+    </li>
+    {{- end }}
+  </ol>
+</figure>
+{{- end }}

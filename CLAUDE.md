@@ -9,6 +9,7 @@ Kullanıcı bir haber ya da olay verip "bunu yaz" dediğinde izlenecek kurallar.
    TR: Ne oldu / Tehdit / Açık nerede / Saldırgan gözü / Nasıl düzelirdi / Ne öğrendim
    EN: What happened / The threat / Where the flaw was / Attacker's view / How it could have been fixed / What I learned
    "Nasıl düzelirdi" altında iki `###`: a) savunan taraf, b) AI tarafı (ajan korumaları, yetkiler, izleme).
+3b. Ön bilgideki `chain:` listesi yazının imza şemasıdır: 4-6 adım, her adımda `attack` (saldırının o adımı) ve `defense` (zinciri o adımda kıracak kontrol). Kısa ve somut tut; iki dilde de doldur.
 4. Metin içi kaynak: `[[n]](#src-n)`; n, ön bilgideki `sources` sırası.
 5. `hugo --gc --minify` uyarısız bitmeli; önizlemede bilgi kutusu, çipler ve `/tags/` filtresi kontrol edilir.
 
@@ -24,6 +25,11 @@ Kullanıcı bir haber ya da olay verip "bunu yaz" dediğinde izlenecek kurallar.
 ## Dil ve üslup
 - Türkçe doğal ve sade; teknik terimin ilk geçtiği yerde parantez içinde İngilizcesi.
 - Uydurma sayı, tarih ya da alıntı yok. Emin olunmayan tarih "Ocak 2025" gibi ay düzeyinde verilir.
+
+## Tasarım ("Mor Baskı")
+- Kırmızı = saldırı, mavi = savunma, mor = ikisi (purple team). Bölüm renkleri sabit sıradan gelir (1 olay, 2-4 kırmızı, 5 mavi, 6 mor); başlık sırasını bozma.
+- Mercek (`data-lens`) ve baskı (`data-theme`) `assets/js/theme.js`'de; `?lens=red|blue` ve `?edition=day` bağlantıları çalışır.
+- Fontlar `static/fonts/` altında gömülü (OFL); dışarıdan font/betik yükleme, CSP sıkı.
 
 ## Yayın
 - Netlify, GitHub deposuna bağlı; push = yayın. DNS Squarespace'te, MX/TXT kayıtlarına asla dokunma.

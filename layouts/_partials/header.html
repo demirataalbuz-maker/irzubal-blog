@@ -1,9 +1,9 @@
 {{- $cur := . }}
-<header class="site-header">
-  <div class="wrap header-row">
+<header class="topbar">
+  <div class="wrap topbar-row">
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="irzubal">
       {{ partial "mark.html" }}
-      <span>irzubal</span>
+      <span class="brand-word">irzubal</span>
     </a>
     <nav class="nav" aria-label="main">
       {{- $items := slice
@@ -16,7 +16,14 @@
         <a href="{{ $url }}"{{ if $active }} aria-current="page"{{ end }}>{{ i18n .key }}</a>
       {{- end }}
     </nav>
-    <div class="tools">
+    <div class="controls">
+      <div class="lens" role="group" aria-label="{{ i18n "lens" }}">
+        {{- range slice "red" "purple" "blue" }}
+        <button type="button" class="lens-btn lens-{{ . }}" data-lens-set="{{ . }}" aria-pressed="{{ if eq . "purple" }}true{{ else }}false{{ end }}" title="{{ i18n (printf "lens_%s_hint" .) }}">
+          <i aria-hidden="true"></i><span>{{ i18n (printf "lens_%s" .) }}</span>
+        </button>
+        {{- end }}
+      </div>
       <nav class="lang" aria-label="{{ i18n "lang_switch" }}">
         {{- /* Çevirisi varsa aynı yazıya, yoksa o dilin ana sayfasına git. */}}
         {{- range hugo.Sites }}
@@ -26,9 +33,8 @@
           <a href="{{ $target }}" hreflang="{{ $lang }}" lang="{{ $lang }}"{{ if eq $lang site.Language.Lang }} aria-current="true"{{ end }}>{{ upper $lang }}</a>
         {{- end }}
       </nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{ i18n "theme_toggle" }}" title="{{ i18n "theme_toggle" }}">
-        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      <button class="edition" type="button" data-theme-toggle aria-label="{{ i18n "edition_toggle" }}" title="{{ i18n "edition_toggle" }}">
+        <span class="ed-night">{{ i18n "edition_night" }}</span><span class="ed-day">{{ i18n "edition_day" }}</span>
       </button>
     </div>
   </div>

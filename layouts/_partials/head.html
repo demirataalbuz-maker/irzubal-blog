@@ -19,6 +19,8 @@
 <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">
 {{- end }}
 <link rel="icon" href="{{ "favicon.svg" | absURL }}" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/anybody-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 {{- /* Tema betiği boyamadan önce çalışsın diye senkron; CSP inline betiğe izin vermiyor. */}}
 {{ $theme := resources.Get "js/theme.js" | minify | fingerprint }}
 <script src="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}"></script>

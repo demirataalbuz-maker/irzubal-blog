@@ -1,10 +1,11 @@
 {{ define "main" }}
-<article class="wrap-narrow page">
-  <header class="page-head-narrow">
-    <h1>{{ .Title }}</h1>
-    {{- with .Params.lede }}<p class="lede">{{ . }}</p>{{ end }}
+<article class="wrap page">
+  <header class="page-head">
+    <p class="dateline"><span>{{ .Title }}</span><span>{{ site.Params.author }}</span><span>{{ i18n "city" }}</span></p>
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{- with .Params.lede }}<p class="page-lede">{{ . }}</p>{{ end }}
   </header>
-  <div class="prose">
+  <div class="prose page-prose">
     {{ .Content }}
   </div>
 </article>

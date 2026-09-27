@@ -1,49 +1,61 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "incidents" }}
-{{- $sevOrder := slice "critical" "high" "medium" "low" }}
+{{- $atlasUsed := slice }}
+{{- range $posts }}{{ $atlasUsed = $atlasUsed | append (.Params.atlas | default slice) }}{{ end }}
+{{- $owaspKeys := slice }}{{ range $k, $_ := hugo.Data.owasp }}{{ $owaspKeys = $owaspKeys | append $k }}{{ end }}
+{{- $groups := dict
+  "buckets" (slice "ai-as-attacker" "ai-system-vulnerability")
+  "owasp" $owaspKeys
+  "severity" (slice "critical" "high" "medium" "low")
+  "atlas" ($atlasUsed | uniq | sort) }}
+
 <section class="wrap page-head">
-  <h1>{{ .Title }}</h1>
-  <p class="lede">{{ i18n "tags_lede" }}</p>
+  <p class="dateline"><span>{{ len $posts }} {{ i18n "stat_incidents" }}</span><span>{{ len $owaspKeys }} OWASP</span><span>{{ len ($atlasUsed | uniq) }} ATLAS</span></p>
+  <h1 class="page-title">{{ .Title }}</h1>
+  <p class="page-lede">{{ i18n "tags_lede" }}</p>
 </section>
 
-<section class="wrap filter" data-filter>
-  {{- range slice "buckets" "owasp" "atlas" "severity" }}
+<section class="wrap index" data-filter>
+  <div class="index-cols">
+    {{- range slice "buckets" "severity" "owasp" "atlas" }}
     {{- $g := . }}
-    {{- $vals := slice }}
-    {{- range $posts }}
-      {{- with index .Params $g }}{{ if reflect.IsSlice . }}{{ $vals = $vals | append . }}{{ else }}{{ $vals = $vals | append (slice .) }}{{ end }}{{ end }}
-    {{- end }}
-    {{- $vals = $vals | uniq | sort }}
-    {{- if eq $g "severity" }}{{ $vals = intersect $sevOrder $vals }}{{ end }}
-    {{- with $vals }}
-    <fieldset class="fgroup">
+    <fieldset class="idx-group idx-{{ $g }}">
       <legend>{{ i18n (printf "group_%s" $g) }}</legend>
-      <div class="chips">
-        {{- range . }}
-          {{- $label := . }}
-          {{- $hint := "" }}
-          {{- if eq $g "buckets" }}{{ $label = i18n (printf "bucket_%s" .) }}{{ end }}
-          {{- if eq $g "severity" }}{{ $label = i18n (printf "severity_%s" .) }}{{ end }}
-          {{- if eq $g "owasp" }}{{ $hint = index hugo.Data.owasp . site.Language.Lang }}{{ end }}
-          {{- if eq $g "atlas" }}{{ $hint = index hugo.Data.atlas . }}{{ end }}
-        <button type="button" class="chip chip-toggle{{ if eq $g "atlas" }} chip-mono{{ end }}{{ if eq $g "buckets" }} chip-sans{{ end }}{{ if eq $g "severity" }} sev-chip sev-{{ . }}{{ end }}" data-group="{{ $g }}" data-value="{{ . }}" aria-pressed="false"{{ with $hint }} title="{{ . }}"{{ end }}>
-          <span>{{ $label }}</span>{{ with $hint }}<span class="chip-hint">{{ . }}</span>{{ end }}
-        </button>
+      <ul role="list">
+        {{- range index $groups $g }}
+          {{- $v := . }}
+          {{- $n := 0 }}
+          {{- if eq $g "severity" }}{{ $n = len (where $posts "Params.severity" $v) }}{{ else }}{{ $n = len (where $posts (printf "Params.%s" $g) "intersect" (slice $v)) }}{{ end }}
+          {{- $key := "" }}{{ $name := "" }}
+          {{- if eq $g "buckets" }}{{ $name = i18n (printf "bucket_%s" $v) }}{{ end }}
+          {{- if eq $g "severity" }}{{ $name = i18n (printf "severity_%s" $v) }}{{ end }}
+          {{- if eq $g "owasp" }}{{ $key = $v }}{{ $name = index hugo.Data.owasp $v site.Language.Lang }}{{ end }}
+          {{- if eq $g "atlas" }}{{ $key = $v }}{{ $name = index hugo.Data.atlas $v }}{{ end }}
+        <li>
+          <button type="button" class="idx-item" data-group="{{ $g }}" data-value="{{ $v }}" aria-pressed="false"{{ if eq $n 0 }} disabled{{ end }}>
+            {{- if eq $g "severity" }}{{ partial "sevmeter.html" $v }}{{ else }}
+            {{- with $key }}<span class="idx-key">{{ . }}</span>{{ end }}
+            <span class="idx-name{{ if eq $g "buckets" }} bucket-{{ $v }}{{ end }}">{{ $name }}</span>
+            {{- end }}
+            <span class="idx-dots" aria-hidden="true"></span>
+            <span class="idx-count">{{ $n }}</span>
+          </button>
+        </li>
         {{- end }}
-      </div>
+      </ul>
     </fieldset>
     {{- end }}
-  {{- end }}
+  </div>
   <div class="filter-bar">
-    <p class="muted small" aria-live="polite"><span data-count>{{ len $posts }}</span> {{ i18n "tags_count" }}</p>
+    <p aria-live="polite"><span data-count>{{ len $posts }}</span> {{ i18n "tags_count" }}</p>
     <button type="button" class="linkbtn" data-clear>{{ i18n "tags_clear" }}</button>
   </div>
 </section>
 
 <section class="wrap">
-  <div class="cards" data-results>
+  <div class="stories" data-results>
     {{- range $posts }}{{ partial "card.html" . }}{{ end }}
   </div>
-  <p class="muted empty" data-empty hidden>{{ i18n "tags_none" }}</p>
+  <p class="empty" data-empty hidden>{{ i18n "tags_none" }}</p>
 </section>
 {{ end }}

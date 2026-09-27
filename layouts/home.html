@@ -1,32 +1,84 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "incidents" }}
-<section class="hero wrap">
-  <p class="eyebrow">{{ i18n "home_eyebrow" }}</p>
-  <h1>{{ i18n "home_title" }}</h1>
-  <p class="lede">{{ i18n "home_lede" }}</p>
-  {{- with .Content }}<div class="hero-note">{{ . }}</div>{{ end }}
-</section>
+{{- $owasp := slice }}{{ $atlas := slice }}
+{{- range $posts }}{{ $owasp = $owasp | append (.Params.owasp | default slice) }}{{ $atlas = $atlas | append (.Params.atlas | default slice) }}{{ end }}
+{{- $lanes := slice "ink" "ink" "red" "red" "red" "blue" "purple" }}
 
-<section class="wrap method" aria-labelledby="method-h">
-  <h2 id="method-h" class="section-label">{{ i18n "home_method" }}</h2>
-  <ol class="steps" role="list">
-    {{- range seq 6 }}
-    <li><span class="step-n">0{{ . }}</span><span>{{ i18n (printf "sec_%d" .) }}</span></li>
-    {{- end }}
-  </ol>
-</section>
-
-<section class="wrap latest" aria-labelledby="latest-h">
-  <div class="section-head">
-    <h2 id="latest-h" class="section-label">{{ i18n "home_latest" }}</h2>
-    <a class="more" href="{{ "incidents/" | relLangURL }}">{{ i18n "home_all" }} →</a>
+<section class="front">
+  <div class="wrap">
+    <p class="dateline">
+      <span>{{ i18n "issue" }} {{ printf "%03d" (len $posts) }}</span>
+      {{- range first 1 $posts }}<span>{{ .Date | time.Format ":date_long" }}</span>{{ end }}
+      <span>{{ i18n "city" }}</span>
+      <span class="dl-stats">{{ len $posts }} {{ i18n "stat_incidents" }} / {{ len (uniq $owasp) }} {{ i18n "stat_owasp" }} / {{ len (uniq $atlas) }} {{ i18n "stat_atlas" }}</span>
+    </p>
+    <h1 class="masthead">
+      <span class="sr-only">irzubal</span>
+      <span class="mh mh-r" aria-hidden="true">IRZUBAL</span>
+      <span class="mh mh-b" aria-hidden="true">IRZUBAL</span>
+    </h1>
+    <div class="front-sub">
+      <p class="tagline">{{ i18n "home_title" | safeHTML }}</p>
+      <p class="front-lede">{{ i18n "home_lede" }}</p>
+    </div>
   </div>
-  {{- with first 6 $posts }}
-  <div class="cards">
+</section>
+
+{{- range first 1 $posts }}
+<section class="wrap lead" aria-labelledby="lead-h">
+  <h2 class="label" id="lead-h">{{ i18n "lead" }}</h2>
+  <article class="lead-story">
+    <div class="lead-main">
+      <div class="kicker">
+        {{- range first 1 (.Params.buckets | default slice) }}<span class="bucket bucket-{{ . }}">{{ i18n (printf "bucket_%s" .) }}</span>{{ end }}
+        {{ partial "sevmeter.html" .Params.severity }}
+      </div>
+      <h3 class="lead-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="deck">{{ .Params.summary | default .Summary | plainify }}</p>
+      <p class="story-foot">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+        {{- with .Params.org }}<span>{{ . }}</span>{{ end }}
+        {{- with .Params.cve }}<span>{{ . }}</span>{{ end }}
+      </p>
+      <a class="read" href="{{ .RelPermalink }}">{{ i18n "read" }} <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="lead-side">
+      {{ partial "infobox.html" . }}
+    </div>
+  </article>
+</section>
+{{- end }}
+
+<section class="wrap legend" aria-labelledby="legend-h">
+  <h2 class="label" id="legend-h">{{ i18n "legend_title" }}</h2>
+  <div class="legend-grid">
+    <ul class="inks" role="list">
+      <li class="ink ink-red"><i aria-hidden="true"></i><b>{{ i18n "legend_red" }}</b><span>{{ i18n "legend_red_text" }}</span></li>
+      <li class="ink ink-blue"><i aria-hidden="true"></i><b>{{ i18n "legend_blue" }}</b><span>{{ i18n "legend_blue_text" }}</span></li>
+      <li class="ink ink-purple"><i aria-hidden="true"></i><b>{{ i18n "legend_purple" }}</b><span>{{ i18n "legend_purple_text" }}</span></li>
+    </ul>
+    <div>
+      <ol class="steps" role="list">
+        {{- range seq 6 }}
+        <li class="step lane-{{ index $lanes . }}"><span class="n">{{ printf "%02d" . }}</span><span>{{ i18n (printf "sec_%d" .) }}</span></li>
+        {{- end }}
+      </ol>
+      <p class="legend-lens">{{ i18n "legend_lens" }}</p>
+    </div>
+  </div>
+</section>
+
+{{- with after 1 $posts }}
+<section class="wrap more" aria-labelledby="more-h">
+  <div class="label-row">
+    <h2 class="label" id="more-h">{{ i18n "more_stories" }}</h2>
+    <a class="more-link" href="{{ "incidents/" | relLangURL }}">{{ i18n "home_all" }} →</a>
+  </div>
+  <div class="stories">
     {{- range . }}{{ partial "card.html" . }}{{ end }}
   </div>
-  {{- else }}
-  <p class="muted">{{ i18n "home_empty" }}</p>
-  {{- end }}
 </section>
+{{- else }}
+{{- if not $posts }}<section class="wrap more"><p class="empty">{{ i18n "home_empty" }}</p></section>{{ end }}
+{{- end }}
 {{ end }}

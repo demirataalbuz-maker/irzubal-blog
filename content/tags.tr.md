@@ -1,4 +1,4 @@
 ---
-title: "Etiketler"
+title: "Dizin"
 layout: "tags"
 ---

@@ -11,6 +11,17 @@ cve: "CVE-2025-32711"
 buckets: ["ai-system-vulnerability"]
 owasp: ["LLM01", "LLM02", "LLM05"]
 atlas: ["AML.T0051.001", "AML.T0068", "AML.T0057", "AML.T0077"]
+chain:
+  - attack: "The attacker sends an email that reads like an ordinary work note. The instructions are embedded in sentences addressed to the human reader."
+    defense: "Email from outside the organisation never shares a context with internal data, or is explicitly marked as an untrusted source."
+  - attack: "The user asks Copilot a related work question; Copilot judges the email relevant and pulls it into context."
+    defense: "Every piece entering the context carries a source label; text from external sources is never treated as instructions."
+  - attack: "The XPIA classifier reads the instructions as written to a human and lets them through."
+    defense: "No single classifier is trusted: input checks, output checks and network restrictions run as separate layers."
+  - attack: "The model embeds sensitive data in a reference-style image URL; the link filter only knows the inline syntax, so it passes."
+    defense: "Every link or image pointing to an external address is removed from answers, whatever its syntax (allowlist, not blocklist)."
+  - attack: "The browser fetches the image by itself; the request reaches the attacker's server through an allowed Teams preview service."
+    defense: "The CSP allowlist keeps no service that fetches other URLs; external addresses in answers and outbound traffic are monitored and alert."
 sources:
   - publisher: "Microsoft MSRC"
     title: "CVE-2025-32711: M365 Copilot Information Disclosure Vulnerability"

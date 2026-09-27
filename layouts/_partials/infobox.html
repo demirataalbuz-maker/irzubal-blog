@@ -2,30 +2,34 @@
 {{- $sev := $p.Params.severity | default "medium" }}
 {{- $status := $p.Params.status | default "confirmed" }}
 {{- $tags := "tags/" | relLangURL }}
-<aside class="infobox" aria-label="{{ $p.Title }}">
+<aside class="casefile" aria-label="{{ i18n "box_title" }}">
+  <p class="casefile-title">{{ i18n "box_title" }}</p>
   <dl>
+    <div class="cf-sev">
+      <dt>{{ i18n "box_severity" }}</dt>
+      <dd>{{ partial "sevmeter.html" $sev }}{{ with $p.Params.cvss }}<span class="cvss">CVSS {{ . }}</span>{{ end }}</dd>
+    </div>
     {{- with $p.Params.incident_date }}
     <div><dt>{{ i18n "box_incident_date" }}</dt><dd>{{ time.Format ":date_long" . }}</dd></div>
     {{- end }}
     {{- with $p.Params.org }}
     <div><dt>{{ i18n "box_org" }}</dt><dd>{{ . }}</dd></div>
     {{- end }}
-    <div><dt>{{ i18n "box_severity" }}</dt><dd><span class="sev sev-{{ $sev }}">{{ i18n (printf "severity_%s" $sev) }}</span>{{ with $p.Params.cvss }} <span class="muted mono">CVSS {{ . }}</span>{{ end }}</dd></div>
-    <div><dt>{{ i18n "box_status" }}</dt><dd><span class="status status-{{ $status }}">{{ i18n (printf "status_%s" $status) }}</span></dd></div>
     {{- with $p.Params.cve }}
     <div><dt>{{ i18n "box_cve" }}</dt><dd class="mono">{{ . }}</dd></div>
     {{- end }}
+    <div><dt>{{ i18n "box_status" }}</dt><dd><span class="status status-{{ $status }}">{{ i18n (printf "status_%s" $status) }}</span></dd></div>
     {{- with $p.Params.owasp }}
-    <div class="wide"><dt>{{ i18n "box_owasp" }}</dt><dd><ul class="maplist" role="list">
+    <div><dt>{{ i18n "box_owasp" }}</dt><dd><ul class="maplist" role="list">
       {{- range . }}
-      <li><a href="{{ $tags }}?f=owasp:{{ . }}"><span class="mono">{{ . }}</span> {{ index hugo.Data.owasp . site.Language.Lang }}</a></li>
+      <li><a href="{{ $tags }}?f=owasp:{{ . }}"><span class="mono">{{ . }}</span><span>{{ index hugo.Data.owasp . site.Language.Lang }}</span></a></li>
       {{- end }}
     </ul></dd></div>
     {{- end }}
     {{- with $p.Params.atlas }}
-    <div class="wide"><dt>{{ i18n "box_atlas" }}</dt><dd><ul class="maplist" role="list">
+    <div><dt>{{ i18n "box_atlas" }}</dt><dd><ul class="maplist" role="list">
       {{- range . }}
-      <li><a href="{{ $tags }}?f=atlas:{{ . }}"><span class="mono">{{ . }}</span> {{ index hugo.Data.atlas . }}</a></li>
+      <li><a href="{{ $tags }}?f=atlas:{{ . }}"><span class="mono">{{ . }}</span><span>{{ index hugo.Data.atlas . }}</span></a></li>
       {{- end }}
     </ul></dd></div>
     {{- end }}

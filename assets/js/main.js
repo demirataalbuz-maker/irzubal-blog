@@ -1,25 +1,42 @@
 (function () {
-  // Tema düğmesi
   var root = document.documentElement;
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  // Gece / gündüz baskısı
   document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
       root.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) {}
+      save("theme", next);
     });
   });
 
-  // Etiket filtresi: grup içinde "ya da", gruplar arasında "ve".
+  // Mercek: kırmızı (saldırı), mor (ikisi), mavi (savunma)
+  var lensBtns = document.querySelectorAll("[data-lens-set]");
+  function setLens(l) {
+    root.setAttribute("data-lens", l);
+    lensBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lens-set") === l)); });
+  }
+  lensBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var l = b.getAttribute("data-lens-set");
+      setLens(l);
+      save("lens", l);
+    });
+  });
+  setLens(root.getAttribute("data-lens") || "purple");
+
+  // Dizin filtresi: grup içinde "ya da", gruplar arasında "ve".
   var filter = document.querySelector("[data-filter]");
   if (!filter) return;
-  var chips = Array.prototype.slice.call(filter.querySelectorAll(".chip-toggle"));
-  var cards = Array.prototype.slice.call(document.querySelectorAll("[data-results] .card"));
+  var items = Array.prototype.slice.call(filter.querySelectorAll("[data-group]"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll("[data-results] .story"));
   var countEl = filter.querySelector("[data-count]");
   var emptyEl = document.querySelector("[data-empty]");
 
   function selected() {
     var sel = {};
-    chips.forEach(function (c) {
+    items.forEach(function (c) {
       if (c.getAttribute("aria-pressed") === "true") {
         (sel[c.dataset.group] = sel[c.dataset.group] || []).push(c.dataset.value);
       }
@@ -49,7 +66,7 @@
     }
   }
 
-  chips.forEach(function (c) {
+  items.forEach(function (c) {
     c.addEventListener("click", function () {
       c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true");
       apply(true);
@@ -57,7 +74,7 @@
   });
 
   filter.querySelector("[data-clear]").addEventListener("click", function () {
-    chips.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    items.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
     apply(true);
   });
 
@@ -66,7 +83,7 @@
     var i = f.indexOf(":");
     if (i < 1) return;
     var g = f.slice(0, i), v = f.slice(i + 1);
-    chips.forEach(function (c) {
+    items.forEach(function (c) {
       if (c.dataset.group === g && c.dataset.value === v) c.setAttribute("aria-pressed", "true");
     });
   });

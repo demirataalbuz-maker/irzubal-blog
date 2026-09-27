@@ -1,0 +1,6 @@
+{{- /* Tehdit seviyesi: dört çubuk, kırmızı mürekkep. */ -}}
+{{- $sev := . | default "medium" }}
+<span class="sevmeter sev-{{ $sev }}">
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="sevlabel">{{ i18n (printf "severity_%s" $sev) }}</span>
+</span>
