@@ -10,7 +10,6 @@ edition_day: "Gündüz"
 edition_toggle: "Gece / gündüz baskısı"
 
 issue: "Sayı"
-city: "İstanbul"
 stat_incidents: "olay"
 stat_owasp: "OWASP maddesi"
 stat_atlas: "ATLAS tekniği"

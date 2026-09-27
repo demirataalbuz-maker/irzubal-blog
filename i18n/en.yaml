@@ -10,7 +10,6 @@ edition_day: "Day"
 edition_toggle: "Night / day edition"
 
 issue: "Issue"
-city: "Istanbul"
 stat_incidents:
   one: "incident"
   other: "incidents"

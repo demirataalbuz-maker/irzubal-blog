@@ -1,6 +1,6 @@
 ---
 title: "About"
-lede: "I'm Demir Ata Albuz, based in Istanbul and training myself as an AI red teamer and purple teamer: learning to break AI systems while learning how to defend them."
+lede: "I'm Demir Ata Albuz, training myself as an AI red teamer and purple teamer: learning to break AI systems while learning how to defend them."
 ---
 
 ## Why this blog exists

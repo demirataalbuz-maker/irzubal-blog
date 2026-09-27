@@ -1,6 +1,6 @@
 ---
 title: "Hakkında"
-lede: "Ben Demir Ata Albuz. İstanbul'da, AI red team ve purple team alanında kendimi yetiştiriyorum: AI sistemlerini kırmayı öğrenirken nasıl savunulacaklarını da öğreniyorum."
+lede: "Ben Demir Ata Albuz. AI red team ve purple team alanında kendimi yetiştiriyorum: AI sistemlerini kırmayı öğrenirken nasıl savunulacaklarını da öğreniyorum."
 ---
 
 ## Bu blog neden var
