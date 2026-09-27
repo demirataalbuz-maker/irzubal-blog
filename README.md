@@ -55,3 +55,23 @@ Site Netlify'da duruyor; DNS Squarespace'te kalıyor ve ona dokunulmuyor (Google
 4. Bundan sonra her `git push` siteyi birkaç dakikada günceller.
 
 `netlify.toml` ayrıca güvenlik başlıklarını ekler (sıkı CSP, HSTS, X-Frame-Options vb.). Sayfalarda satır içi betik ya da stil yok, CSP'yi gevşetme.
+
+## Yönetim paneli (irzubal.com/admin)
+
+[Sveltia CMS](https://sveltiacms.app) ile tarayıcıdan yazı ekleme/düzenleme. Her kayıt `main` dalına commit atar, Netlify siteyi yeniden yayınlar.
+
+**Bir kerelik kurulum (GitHub ile giriş):**
+
+1. GitHub → Settings → Developer settings → **OAuth Apps** → **New OAuth App**
+   - Application name: `irzubal CMS`
+   - Homepage URL: `https://irzubal.com`
+   - Authorization callback URL: `https://api.netlify.com/auth/done`
+   - **Register application** → Client ID'yi kopyala → **Generate a new client secret** → secret'ı kopyala (bir kez gösterilir).
+2. Netlify → irzubal.com projesi → **Project configuration → Security → OAuth** → Authentication providers → **Install provider** → **GitHub** → Client ID ve Client Secret'ı yapıştır → **Install**.
+3. `https://irzubal.com/admin/` → **Sign In with GitHub**.
+
+Alternatif (en az yetki): **Sign In Using Access Token** ile yalnızca bu depoya `Contents: Read and write` izni olan fine-grained token kullanılabilir.
+
+**Dosyalar:** `static/admin/index.html` (Sveltia, sabit sürüm + SRI), `static/admin/config.yml` (alanlar), `tools/cms-atlas-secenekleri.py` (ATLAS listesi), `tools/sveltia-guncelle.sh` (sürüm yükseltme). Yüklenen görseller `static/images/` altına gider.
+
+**Güvenlik:** Genel sitenin CSP'si değişmedi. `/admin/*` kendi CSP'sini `netlify.toml`'dan alır (Netlify aynı başlığı birleştirmiyor, yalnızca bu kural uygulanıyor; 2026-09-27'de canlıda doğrulandı).
