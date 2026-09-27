@@ -1,0 +1,11 @@
+{{ define "main" }}
+<article class="wrap-narrow page">
+  <header class="page-head-narrow">
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.lede }}<p class="lede">{{ . }}</p>{{ end }}
+  </header>
+  <div class="prose">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}

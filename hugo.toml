@@ -1,0 +1,51 @@
+baseURL = "https://irzubal.com/"
+title = "irzubal"
+defaultContentLanguage = "tr"
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = true
+timeZone = "Europe/Istanbul"
+
+# Etiketler Hugo taksonomisi değil, yazı parametresi (buckets / owasp / atlas / severity).
+# Filtreleme /tags/ sayfasında tarayıcıda yapılır.
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  author = "Demir Ata Albuz"
+  email = "demir@irzubal.com"
+  github = "https://github.com/demirataalbuz-maker"
+  linkedin = "https://www.linkedin.com/in/demir-ata-albuz-592566295/"
+  tryhackme = "https://tryhackme.com/p/demirataalbuz"
+  hackthebox = "https://profile.hackthebox.com/profile/019e8ab7-a16d-70b7-a5bf-87b8912bf067"
+
+[languages]
+  [languages.tr]
+    label = "Türkçe"
+    locale = "tr-TR"
+    weight = 1
+    title = "irzubal · AI güvenlik olay analizi"
+    [languages.tr.params]
+      description = "Gerçek AI güvenlik olaylarının saldırı ve savunma tarafından analizi. OWASP LLM Top 10 ve MITRE ATLAS eşlemeli."
+  [languages.en]
+    label = "English"
+    locale = "en-US"
+    weight = 2
+    title = "irzubal · AI security incident analysis"
+    [languages.en.params]
+      description = "Real-world AI security incidents analysed from both sides, attack and defense. Mapped to the OWASP LLM Top 10 and MITRE ATLAS."
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.goldmark.parser.attribute]
+    block = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 2
+
+[outputs]
+  home = ["html", "rss"]
+  section = ["html", "rss"]
+  page = ["html"]

@@ -1,0 +1,14 @@
+{{- with .Params.sources }}
+<section class="sources" aria-labelledby="sources-h">
+  <h2 id="sources-h">{{ i18n "sources" }}</h2>
+  <ol>
+    {{- range $i, $s := . }}
+    <li id="src-{{ add $i 1 }}">
+      <span class="src-pub">{{ $s.publisher }}</span>
+      <a href="{{ $s.url }}" rel="noopener noreferrer">{{ $s.title }}</a>
+      {{- with $s.date }} <span class="muted">({{ . }})</span>{{ end }}
+    </li>
+    {{- end }}
+  </ol>
+</section>
+{{- end }}

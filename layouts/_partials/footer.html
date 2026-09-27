@@ -1,0 +1,13 @@
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <p class="muted small">{{ i18n "footer_note" }}</p>
+    <p class="footer-links small">
+      <a href="{{ site.Params.github }}" rel="me noopener">GitHub</a>
+      <a href="{{ site.Params.linkedin }}" rel="me noopener">LinkedIn</a>
+      {{- with .Site.Home.OutputFormats.Get "rss" }}
+      <a href="{{ .RelPermalink }}">RSS</a>
+      {{- end }}
+      <span class="muted">© {{ now.Year }} {{ site.Params.author }}</span>
+    </p>
+  </div>
+</footer>

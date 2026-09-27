@@ -1,0 +1,16 @@
+{{- /* Olay kartı. Filtre sayfası data-* özniteliklerini okur. */ -}}
+{{- $p := . }}
+{{- $sev := $p.Params.severity | default "medium" }}
+<article class="card"
+  data-buckets="{{ delimit ($p.Params.buckets | default slice) " " }}"
+  data-owasp="{{ delimit ($p.Params.owasp | default slice) " " }}"
+  data-atlas="{{ delimit ($p.Params.atlas | default slice) " " }}"
+  data-severity="{{ $sev }}">
+  <div class="card-meta">
+    <span class="sev sev-{{ $sev }}">{{ i18n (printf "severity_%s" $sev) }}</span>
+    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date | time.Format ":date_medium" }}</time>
+  </div>
+  <h3 class="card-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h3>
+  <p class="card-summary">{{ $p.Params.summary | default $p.Summary | plainify }}</p>
+  {{ partial "chips.html" (dict "page" $p "compact" true) }}
+</article>

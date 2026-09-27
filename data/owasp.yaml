@@ -1,0 +1,11 @@
+# OWASP Top 10 for LLM Applications 2025 (genai.owasp.org/llm-top-10/)
+LLM01: { en: "Prompt Injection", tr: "Prompt Enjeksiyonu" }
+LLM02: { en: "Sensitive Information Disclosure", tr: "Hassas Bilgi İfşası" }
+LLM03: { en: "Supply Chain", tr: "Tedarik Zinciri" }
+LLM04: { en: "Data and Model Poisoning", tr: "Veri ve Model Zehirleme" }
+LLM05: { en: "Improper Output Handling", tr: "Hatalı Çıktı İşleme" }
+LLM06: { en: "Excessive Agency", tr: "Aşırı Yetki" }
+LLM07: { en: "System Prompt Leakage", tr: "Sistem Prompt Sızıntısı" }
+LLM08: { en: "Vector and Embedding Weaknesses", tr: "Vektör ve Gömme Zafiyetleri" }
+LLM09: { en: "Misinformation", tr: "Yanlış Bilgi" }
+LLM10: { en: "Unbounded Consumption", tr: "Sınırsız Kaynak Tüketimi" }

@@ -1,0 +1,49 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Section" "incidents" }}
+{{- $sevOrder := slice "critical" "high" "medium" "low" }}
+<section class="wrap page-head">
+  <h1>{{ .Title }}</h1>
+  <p class="lede">{{ i18n "tags_lede" }}</p>
+</section>
+
+<section class="wrap filter" data-filter>
+  {{- range slice "buckets" "owasp" "atlas" "severity" }}
+    {{- $g := . }}
+    {{- $vals := slice }}
+    {{- range $posts }}
+      {{- with index .Params $g }}{{ if reflect.IsSlice . }}{{ $vals = $vals | append . }}{{ else }}{{ $vals = $vals | append (slice .) }}{{ end }}{{ end }}
+    {{- end }}
+    {{- $vals = $vals | uniq | sort }}
+    {{- if eq $g "severity" }}{{ $vals = intersect $sevOrder $vals }}{{ end }}
+    {{- with $vals }}
+    <fieldset class="fgroup">
+      <legend>{{ i18n (printf "group_%s" $g) }}</legend>
+      <div class="chips">
+        {{- range . }}
+          {{- $label := . }}
+          {{- $hint := "" }}
+          {{- if eq $g "buckets" }}{{ $label = i18n (printf "bucket_%s" .) }}{{ end }}
+          {{- if eq $g "severity" }}{{ $label = i18n (printf "severity_%s" .) }}{{ end }}
+          {{- if eq $g "owasp" }}{{ $hint = index hugo.Data.owasp . site.Language.Lang }}{{ end }}
+          {{- if eq $g "atlas" }}{{ $hint = index hugo.Data.atlas . }}{{ end }}
+        <button type="button" class="chip chip-toggle{{ if eq $g "atlas" }} chip-mono{{ end }}{{ if eq $g "buckets" }} chip-sans{{ end }}{{ if eq $g "severity" }} sev-chip sev-{{ . }}{{ end }}" data-group="{{ $g }}" data-value="{{ . }}" aria-pressed="false"{{ with $hint }} title="{{ . }}"{{ end }}>
+          <span>{{ $label }}</span>{{ with $hint }}<span class="chip-hint">{{ . }}</span>{{ end }}
+        </button>
+        {{- end }}
+      </div>
+    </fieldset>
+    {{- end }}
+  {{- end }}
+  <div class="filter-bar">
+    <p class="muted small" aria-live="polite"><span data-count>{{ len $posts }}</span> {{ i18n "tags_count" }}</p>
+    <button type="button" class="linkbtn" data-clear>{{ i18n "tags_clear" }}</button>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="cards" data-results>
+    {{- range $posts }}{{ partial "card.html" . }}{{ end }}
+  </div>
+  <p class="muted empty" data-empty hidden>{{ i18n "tags_none" }}</p>
+</section>
+{{ end }}

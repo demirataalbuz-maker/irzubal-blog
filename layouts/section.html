@@ -1,0 +1,11 @@
+{{ define "main" }}
+<section class="wrap page-head">
+  <h1>{{ .Title }}</h1>
+  <p class="lede">{{ i18n "incidents_lede" }}</p>
+</section>
+<section class="wrap">
+  <div class="cards">
+    {{- range .Pages }}{{ partial "card.html" . }}{{ end }}
+  </div>
+</section>
+{{ end }}

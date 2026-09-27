@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article class="post wrap-narrow">
+  <header class="post-head">
+    <a class="back" href="{{ "incidents/" | relLangURL }}">← {{ i18n "back_all" }}</a>
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.summary }}<p class="lede">{{ . }}</p>{{ end }}
+    <p class="post-meta muted small">
+      <span>{{ i18n "published" }} <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time></span>
+      {{- if gt .Lastmod .Date }}{{ if ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02") }}
+      <span>{{ i18n "updated" }} <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod | time.Format ":date_long" }}</time></span>
+      {{- end }}{{ end }}
+      <span>{{ .ReadingTime }} {{ i18n "reading_time" }}</span>
+      {{- range .Translations }}
+      <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ i18n "other_lang" }}</a>
+      {{- end }}
+    </p>
+    {{ partial "chips.html" (dict "page" .) }}
+  </header>
+
+  {{ partial "infobox.html" . }}
+
+  <div class="prose numbered">
+    {{ .Content }}
+  </div>
+
+  {{ partial "sources.html" . }}
+</article>
+{{ end }}
