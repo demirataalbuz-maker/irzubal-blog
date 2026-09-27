@@ -16,13 +16,6 @@ stat_atlas: "ATLAS tekniği"
 
 home_title: 'AI sistemleri nasıl <em class="w-red">kırılıyor</em>, nasıl <em class="w-blue">savunuluyor</em>.'
 home_lede: "Gerçek AI güvenlik olaylarını iki mürekkeple basıyorum: kırmızı, saldırganın bulduğu açık; mavi, savunmanın kaçırdığı kontrol. Üst üste bindikleri yer mor, yani purple team. Her analiz OWASP LLM Top 10 ve MITRE ATLAS ile eşlenir."
-legend_title: "Nasıl okunur"
-legend_red: "Saldırı"
-legend_red_text: "Saldırganın gördüğü ve kullandığı"
-legend_blue: "Savunma"
-legend_blue_text: "Zincirin kırılabileceği yer"
-legend_purple: "Mor"
-legend_purple_text: "İkisi birden: purple team"
 lead: "Manşet"
 more_stories: "Diğer olaylar"
 read: "Analizi oku"

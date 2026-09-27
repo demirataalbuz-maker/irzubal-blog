@@ -22,13 +22,6 @@ stat_atlas:
 
 home_title: 'How AI systems get <em class="w-red">broken</em>, and how to <em class="w-blue">defend</em> them.'
 home_lede: "I print real AI security incidents in two inks: red for the flaw the attacker found, blue for the control the defender missed. Where they overlap it turns purple, which is what purple teaming is. Every analysis is mapped to the OWASP LLM Top 10 and MITRE ATLAS."
-legend_title: "How to read"
-legend_red: "Attack"
-legend_red_text: "What the attacker saw and used"
-legend_blue: "Defense"
-legend_blue_text: "Where the chain could break"
-legend_purple: "Purple"
-legend_purple_text: "Both at once: purple team"
 lead: "Lead story"
 more_stories: "More incidents"
 read: "Read the analysis"

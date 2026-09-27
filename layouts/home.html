@@ -2,7 +2,6 @@
 {{- $posts := where site.RegularPages "Section" "incidents" }}
 {{- $owasp := slice }}{{ $atlas := slice }}
 {{- range $posts }}{{ $owasp = $owasp | append (.Params.owasp | default slice) }}{{ $atlas = $atlas | append (.Params.atlas | default slice) }}{{ end }}
-{{- $lanes := slice "ink" "ink" "red" "red" "red" "blue" "purple" }}
 
 <section class="front">
   <div class="wrap">
@@ -48,23 +47,6 @@
 </section>
 {{- end }}
 
-<section class="wrap legend" aria-labelledby="legend-h">
-  <h2 class="label" id="legend-h">{{ i18n "legend_title" }}</h2>
-  <div class="legend-grid">
-    <ul class="inks" role="list">
-      <li class="ink ink-red"><i aria-hidden="true"></i><b>{{ i18n "legend_red" }}</b><span>{{ i18n "legend_red_text" }}</span></li>
-      <li class="ink ink-blue"><i aria-hidden="true"></i><b>{{ i18n "legend_blue" }}</b><span>{{ i18n "legend_blue_text" }}</span></li>
-      <li class="ink ink-purple"><i aria-hidden="true"></i><b>{{ i18n "legend_purple" }}</b><span>{{ i18n "legend_purple_text" }}</span></li>
-    </ul>
-    <div>
-      <ol class="steps" role="list">
-        {{- range seq 6 }}
-        <li class="step lane-{{ index $lanes . }}"><span class="n">{{ printf "%02d" . }}</span><span>{{ i18n (printf "sec_%d" .) }}</span></li>
-        {{- end }}
-      </ol>
-    </div>
-  </div>
-</section>
 
 {{- with after 1 $posts }}
 <section class="wrap more" aria-labelledby="more-h">

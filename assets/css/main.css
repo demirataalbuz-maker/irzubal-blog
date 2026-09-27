@@ -256,7 +256,7 @@ a:hover { color: var(--accent); }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ---------- Manşet haberi ---------- */
-.lead { padding-top: clamp(40px, 6vw, 72px); }
+.lead { padding-top: clamp(40px, 6vw, 72px); padding-bottom: 80px; }
 .lead-story { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 32px 56px; border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 24px 0 32px; }
 .lead-title {
   margin: 0 0 16px; font-family: var(--f-display); font-weight: 800; font-stretch: 70%;
@@ -271,28 +271,8 @@ a:hover { color: var(--accent); }
 .read:hover { border-color: var(--accent); }
 @media (max-width: 900px) { .lead-story { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------- Okuma kılavuzu ---------- */
-.legend { padding-top: clamp(48px, 7vw, 88px); padding-bottom: 72px; }
-.legend-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 28px 56px; align-items: start; }
-.inks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.ink { display: grid; grid-template-columns: 34px auto; column-gap: 12px; align-items: center; transition: opacity 0.35s, filter 0.35s; }
-.ink i { grid-row: span 2; width: 34px; height: 34px; border-radius: 50%; mix-blend-mode: var(--blend); }
-.ink b { font-family: var(--f-display); font-weight: 800; font-stretch: 80%; font-size: 21px; line-height: 1.1; }
-.ink span { font-size: 15.5px; color: var(--ink-soft); line-height: 1.35; }
-.ink-red i { background: var(--red); }
-.ink-blue i { background: var(--blue); }
-.ink-purple i { background: radial-gradient(circle at 30% 50%, var(--red) 0 58%, transparent 59%), radial-gradient(circle at 70% 50%, var(--blue) 0 58%, transparent 59%); }
-.ink-red b { color: var(--red); }
-.ink-blue b { color: var(--blue); }
-.ink-purple b { color: var(--purple); }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 18px; }
-.step { border-top: 3px solid var(--c, var(--ink)); padding: 10px 0 16px; display: flex; flex-direction: column; gap: 2px; transition: opacity 0.35s, filter 0.35s; }
-.step .n { font-family: var(--f-mono); font-size: 11px; color: var(--c, var(--ink-soft)); }
-.step span:last-child { font-family: var(--f-display); font-weight: 700; font-stretch: 82%; font-size: 19px; line-height: 1.15; }
-@media (max-width: 820px) { .legend-grid { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 480px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* Şerit renkleri (adımlar ve yazı bölümleri) */
+/* Şerit renkleri (yazı bölümleri) */
 .lane-ink { --c: var(--ink); }
 .lane-red { --c: var(--red); }
 .lane-blue { --c: var(--blue); }
