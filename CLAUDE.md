@@ -30,6 +30,8 @@ Kullanıcı bir haber ya da olay verip "bunu yaz" dediğinde izlenecek kurallar.
 - Kırmızı = saldırı, mavi = savunma, mor = ikisi (purple team). Bölüm renkleri sabit sıradan gelir (1 olay, 2-4 kırmızı, 5 mavi, 6 mor); başlık sırasını bozma.
 - Mercek (`data-lens`) ve baskı (`data-theme`) `assets/js/theme.js`'de; `?lens=red|blue` ve `?edition=day` bağlantıları çalışır.
 - Fontlar `static/fonts/` altında gömülü (OFL); dışarıdan font/betik yükleme, CSP sıkı.
+- Şablonlarda `data-on…` ile başlayan öznitelik kullanma: Go html/template `data-` önekini atıp `on*` olay özniteliği sanıyor ve değeri JS dizesi olarak tırnaklıyor.
+- İngilizce sayılı metinler i18n'de `one`/`other` biçimli; `i18n "anahtar" sayı` ile çağır.
 
 ## Yayın
 - Netlify, GitHub deposuna bağlı; push = yayın. DNS Squarespace'te, MX/TXT kayıtlarına asla dokunma.
