@@ -37,7 +37,7 @@
     var shown = 0;
     cards.forEach(function (card) {
       var ok = groups.every(function (g) {
-        var have = (card.getAttribute("data-" + g) || "").split(" ");
+        var have = (card.getAttribute("data-" + g) || "").split("|");
         return sel[g].some(function (v) { return have.indexOf(v) !== -1; });
       });
       card.hidden = !ok;

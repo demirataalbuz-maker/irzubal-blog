@@ -17,6 +17,15 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
+# Yönetim paneli (Sveltia CMS): yalnızca /admin/* için gevşetilmiş CSP.
+# Kaynak: sveltiacms.app/en/docs/security (GitHub arka ucu) + blob worker + Netlify OAuth.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline'; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' blob: data: https://*.githubusercontent.com; media-src blob:; frame-src blob:; worker-src 'self' blob:; manifest-src blob:; connect-src 'self' blob: data: https://unpkg.com https://api.github.com https://www.githubstatus.com https://api.netlify.com; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-cache"
+
 [[headers]]
   for = "/css/*"
   [headers.values]

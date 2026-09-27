@@ -2,6 +2,9 @@
 {{- $p := .page }}
 {{- $tags := "tags/" | relLangURL }}
 <ul class="chips" role="list">
+  {{- range $p.Params.tags }}
+  <li><a class="chip chip-tag" href="{{ $tags }}?f=tags:{{ . | urlquery }}">#{{ . }}</a></li>
+  {{- end }}
   {{- range $p.Params.owasp }}
   <li><a class="chip" href="{{ $tags }}?f=owasp:{{ . }}" title="{{ index hugo.Data.owasp . site.Language.Lang }}">{{ . }}</a></li>
   {{- end }}

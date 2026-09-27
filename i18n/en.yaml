@@ -55,6 +55,7 @@ tags_none: "No incidents match this filter."
 group_buckets: "Category"
 group_owasp: "OWASP LLM Top 10"
 group_atlas: "MITRE ATLAS"
+group_tags: "Tags"
 group_severity: "Threat level"
 
 bucket_ai-as-attacker: "AI as attacker"

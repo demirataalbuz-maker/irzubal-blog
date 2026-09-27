@@ -5,12 +5,13 @@ summary: "Aim Labs, M365 Copilot'ın gelen bir e-postadaki gizli talimatlara uyu
 incident_date: 2025-06-11
 org: "Microsoft 365 Copilot"
 severity: critical
-cvss: "9.3"
+cvss: 9.3
 status: confirmed
 cve: "CVE-2025-32711"
 buckets: ["ai-system-vulnerability"]
 owasp: ["LLM01", "LLM02", "LLM05"]
 atlas: ["AML.T0051.001", "AML.T0068", "AML.T0057", "AML.T0077"]
+tags: ["copilot", "zero-click", "rag", "markdown"]
 chain:
   - attack: "Saldırgan, iş notu gibi görünen bir e-posta gönderir. Talimatlar, e-postayı okuyan insana yazılmış cümlelere gömülüdür."
     defense: "Kuruluş dışından gelen e-posta, iç verilerle aynı bağlama alınmaz ya da açıkça \"güvenilmeyen kaynak\" olarak işaretlenir."
@@ -28,11 +29,11 @@ sources:
     date: "2025-06-11"
     url: "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711"
   - publisher: "CVE Program"
-    title: "CVE-2025-32711 kaydı (CVSS 3.1 vektörü, CWE-74)"
+    title: "CVE Record: CVE-2025-32711"
     date: "2025-06-11"
     url: "https://www.cve.org/CVERecord?id=CVE-2025-32711"
   - publisher: "Aim Labs (Aim Security)"
-    title: "EchoLeak: ilk açıklama ve saldırı zinciri"
+    title: "EchoLeak (Aim Labs disclosure)"
     date: "2025-06-11"
     url: "https://www.aim.security/lp/aim-labs-echoleak-blogpost"
   - publisher: "Reddy & Gujral, arXiv:2509.10540"
@@ -67,7 +68,7 @@ Microsoft açığa **CVE-2025-32711** numarasını verdi, "kritik" olarak sını
 - **Neye ulaşıyor:** Copilot'ın o kullanıcı adına okuyabildiği her şeye: e-postalar, OneDrive dosyaları, SharePoint içerikleri, Teams yazışmaları [[3]](#src-3) [[4]](#src-4). Saldırgan veriye kendisi dokunmuyor. Veriyi Copilot toplayıp dışarı taşıyor.
 - **En kötü senaryo:** Kullanıcının erişebildiği gizli bir belge (satın alma planı, müşteri listesi, bir belgede unutulmuş erişim anahtarı) tek bir e-postayla ve kimse fark etmeden dışarı çıkıyor. Kullanıcı hiçbir uyarı görmüyor. Kayıtlarda yalnızca sıradan bir Copilot sohbeti duruyor.
 
-## Açık nerede
+## Açık neredeydi
 
 Tek bir hata yoktu; dört ayrı savunma arka arkaya aşıldı. Hepsinin altındaki tasarım kusuruna Aim Labs **LLM kapsam ihlali** (LLM Scope Violation) adını verdi: dışarıdan gelen güvenilmeyen bir metin (saldırganın e-postası), kullanıcının ayrıcalıklı verisiyle aynı bağlam penceresine giriyor ve model ikisini birbirinden ayıramıyor [[3]](#src-3) [[4]](#src-4).
 
@@ -90,7 +91,7 @@ Microsoft açığı CWE-74 (çıktının bir sonraki bileşende enjeksiyona yol 
 | ATLAS | AML.T0057 | Modelin bağlı olduğu veri kaynaklarından sızıntı |
 | ATLAS | AML.T0077 | Verinin, yanıt işlenirken (görsel yüklenirken) dışarı taşınması |
 
-## Saldırgan gözü
+## Saldırgan gözüyle
 
 Saldırganın bakışından EchoLeak şık bir zincir, çünkü her adım tek başına "küçük" görünen bir boşluğu kullanıyor:
 

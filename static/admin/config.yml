@@ -1,0 +1,429 @@
+# irzubal.com · Sveltia CMS yapılandırması
+# Giriş: GitHub (Netlify OAuth sağlayıcısı üzerinden). Her kayıt main dalına commit = yayın.
+# ATLAS seçenekleri tools/cms-atlas-secenekleri.py ile data/atlas.yaml'dan üretilir; elle düzenleme.
+
+backend:
+  name: github
+  repo: demirataalbuz-maker/irzubal-blog
+  branch: main
+
+site_url: https://irzubal.com
+display_url: https://irzubal.com
+
+media_folder: static/images
+public_folder: /images
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+i18n:
+  structure: multiple_files
+  locales: [tr, en]
+  default_locale: tr
+
+collections:
+  # ------------------------------------------------------------------ Olaylar
+  - name: incidents
+    label: Olaylar
+    label_singular: Olay
+    folder: content/incidents
+    path: "{{slug}}/index"
+    create: true
+    i18n: true
+    slug:
+      template: "{{slug}}"
+      editable: [create]
+      hint: "Adres parçası, ör. echoleak-m365-copilot. Kısa, küçük harf, tire ile."
+      pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Sadece küçük harf, rakam ve tire"]
+    summary: "{{title}}"
+    sortable_fields: [date, title, severity]
+    fields:
+      - { name: title, label: Başlık, widget: string, i18n: true }
+      - name: summary
+        label: Özet
+        widget: text
+        i18n: true
+        hint: "Kartlarda ve arama sonuçlarında görünen 1-2 cümle."
+      - name: date
+        label: Yayın tarihi
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+        default: "{{now}}"
+        i18n: duplicate
+      - name: draft
+        label: Taslak
+        widget: boolean
+        default: false
+        i18n: duplicate
+        hint: "Açıkken yazı sitede görünmez."
+      - name: incident_date
+        label: Açıklanma tarihi
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+        i18n: duplicate
+        hint: "Olayın kamuya açıklandığı gün."
+      - { name: org, label: Etkilenen ürün / kurum, widget: string, i18n: duplicate, hint: "ör. Microsoft 365 Copilot" }
+      - name: cve
+        label: CVE
+        widget: string
+        required: false
+        i18n: duplicate
+        pattern: ["^CVE-\\d{4}-\\d{4,}$", "Biçim: CVE-2025-32711"]
+      - name: cvss
+        label: CVSS puanı
+        widget: number
+        value_type: float
+        min: 0
+        max: 10
+        step: 0.1
+        required: false
+        i18n: duplicate
+      - name: severity
+        label: Önem
+        widget: select
+        default: high
+        i18n: duplicate
+        options:
+          - { label: Low / Düşük, value: low }
+          - { label: Medium / Orta, value: medium }
+          - { label: High / Yüksek, value: high }
+          - { label: Critical / Kritik, value: critical }
+      - name: status
+        label: Durum
+        widget: select
+        default: confirmed
+        i18n: duplicate
+        options:
+          - { label: Confirmed / Doğrulandı, value: confirmed }
+          - { label: Disputed / Tartışmalı, value: disputed }
+      - name: buckets
+        label: Kategori
+        widget: select
+        multiple: true
+        min: 1
+        max: 2
+        default: [ai-system-vulnerability]
+        i18n: duplicate
+        options:
+          - { label: AI as attacker / Saldırgan olarak AI, value: ai-as-attacker }
+          - { label: AI system vulnerability / AI sistem zafiyeti, value: ai-system-vulnerability }
+      - name: owasp
+        label: OWASP LLM Top 10 (2025)
+        widget: select
+        multiple: true
+        required: false
+        i18n: duplicate
+        options:
+          - { label: "LLM01 · Prompt Injection / Prompt Enjeksiyonu", value: LLM01 }
+          - { label: "LLM02 · Sensitive Information Disclosure / Hassas Bilgi İfşası", value: LLM02 }
+          - { label: "LLM03 · Supply Chain / Tedarik Zinciri", value: LLM03 }
+          - { label: "LLM04 · Data and Model Poisoning / Veri ve Model Zehirleme", value: LLM04 }
+          - { label: "LLM05 · Improper Output Handling / Hatalı Çıktı İşleme", value: LLM05 }
+          - { label: "LLM06 · Excessive Agency / Aşırı Yetki", value: LLM06 }
+          - { label: "LLM07 · System Prompt Leakage / Sistem Prompt Sızıntısı", value: LLM07 }
+          - { label: "LLM08 · Vector and Embedding Weaknesses / Vektör ve Gömme Zafiyetleri", value: LLM08 }
+          - { label: "LLM09 · Misinformation / Yanlış Bilgi", value: LLM09 }
+          - { label: "LLM10 · Unbounded Consumption / Sınırsız Kaynak Tüketimi", value: LLM10 }
+      - name: atlas
+        label: MITRE ATLAS teknikleri
+        widget: select
+        multiple: true
+        required: false
+        i18n: duplicate
+        hint: "Kimlik ya da ad yazarak ara, ör. T0051 ya da Prompt Injection."
+        options:
+          # ATLAS-OPTIONS-START
+          - { label: "AML.T0000 · Search Open Technical Databases", value: AML.T0000 }
+          - { label: "AML.T0000.000 · Search Open Technical Databases: Journals and Conference Proceedings", value: AML.T0000.000 }
+          - { label: "AML.T0000.001 · Search Open Technical Databases: Pre-Print Repositories", value: AML.T0000.001 }
+          - { label: "AML.T0000.002 · Search Open Technical Databases: Technical Blogs", value: AML.T0000.002 }
+          - { label: "AML.T0000.003 · Search Open Technical Databases: Scan Databases", value: AML.T0000.003 }
+          - { label: "AML.T0001 · Search Open AI Vulnerability Analysis", value: AML.T0001 }
+          - { label: "AML.T0002 · Acquire Public AI Artifacts", value: AML.T0002 }
+          - { label: "AML.T0002.000 · Acquire Public AI Artifacts: Datasets", value: AML.T0002.000 }
+          - { label: "AML.T0002.001 · Acquire Public AI Artifacts: Models", value: AML.T0002.001 }
+          - { label: "AML.T0002.002 · Acquire Public AI Artifacts: AI Agent Configuration", value: AML.T0002.002 }
+          - { label: "AML.T0003 · Search Victim-Owned Websites", value: AML.T0003 }
+          - { label: "AML.T0004 · Search Application Repositories", value: AML.T0004 }
+          - { label: "AML.T0005 · Create Proxy AI Model", value: AML.T0005 }
+          - { label: "AML.T0005.000 · Create Proxy AI Model: Train Proxy via Gathered AI Artifacts", value: AML.T0005.000 }
+          - { label: "AML.T0005.001 · Create Proxy AI Model: Train Proxy via Replication", value: AML.T0005.001 }
+          - { label: "AML.T0005.002 · Create Proxy AI Model: Use Pre-Trained Model", value: AML.T0005.002 }
+          - { label: "AML.T0006 · Active Scanning", value: AML.T0006 }
+          - { label: "AML.T0006.000 · Active Scanning: Enumerate Hosted AI Resources", value: AML.T0006.000 }
+          - { label: "AML.T0006.001 · Active Scanning: Query Platform Metadata APIs", value: AML.T0006.001 }
+          - { label: "AML.T0006.002 · Active Scanning: Scan for Exposed AI Infrastructure", value: AML.T0006.002 }
+          - { label: "AML.T0006.003 · Active Scanning: Probe AI Agent Trigger Channels", value: AML.T0006.003 }
+          - { label: "AML.T0007 · Discover AI Artifacts", value: AML.T0007 }
+          - { label: "AML.T0008 · Acquire Infrastructure", value: AML.T0008 }
+          - { label: "AML.T0008.000 · Acquire Infrastructure: AI Development Workspaces", value: AML.T0008.000 }
+          - { label: "AML.T0008.001 · Acquire Infrastructure: Consumer Hardware", value: AML.T0008.001 }
+          - { label: "AML.T0008.002 · Acquire Infrastructure: Domains", value: AML.T0008.002 }
+          - { label: "AML.T0008.003 · Acquire Infrastructure: Physical Countermeasures", value: AML.T0008.003 }
+          - { label: "AML.T0008.004 · Acquire Infrastructure: Serverless", value: AML.T0008.004 }
+          - { label: "AML.T0008.005 · Acquire Infrastructure: AI Service Proxies", value: AML.T0008.005 }
+          - { label: "AML.T0010 · AI Supply Chain Compromise", value: AML.T0010 }
+          - { label: "AML.T0010.000 · AI Supply Chain Compromise: Hardware", value: AML.T0010.000 }
+          - { label: "AML.T0010.001 · AI Supply Chain Compromise: AI Software", value: AML.T0010.001 }
+          - { label: "AML.T0010.002 · AI Supply Chain Compromise: Data", value: AML.T0010.002 }
+          - { label: "AML.T0010.003 · AI Supply Chain Compromise: Model", value: AML.T0010.003 }
+          - { label: "AML.T0010.004 · AI Supply Chain Compromise: Container Registry", value: AML.T0010.004 }
+          - { label: "AML.T0010.005 · AI Supply Chain Compromise: AI Agent Tool", value: AML.T0010.005 }
+          - { label: "AML.T0011 · User Execution", value: AML.T0011 }
+          - { label: "AML.T0011.000 · User Execution: Unsafe AI Artifacts", value: AML.T0011.000 }
+          - { label: "AML.T0011.001 · User Execution: Malicious Package", value: AML.T0011.001 }
+          - { label: "AML.T0011.002 · User Execution: Poisoned AI Agent Tool", value: AML.T0011.002 }
+          - { label: "AML.T0011.003 · User Execution: Malicious Link", value: AML.T0011.003 }
+          - { label: "AML.T0012 · Valid Accounts", value: AML.T0012 }
+          - { label: "AML.T0013 · Discover AI Model Ontology", value: AML.T0013 }
+          - { label: "AML.T0014 · Discover AI Model Family", value: AML.T0014 }
+          - { label: "AML.T0015 · Evade AI Model", value: AML.T0015 }
+          - { label: "AML.T0016 · Obtain Capabilities", value: AML.T0016 }
+          - { label: "AML.T0016.000 · Obtain Capabilities: Adversarial AI Attack Implementations", value: AML.T0016.000 }
+          - { label: "AML.T0016.001 · Obtain Capabilities: Software Tools", value: AML.T0016.001 }
+          - { label: "AML.T0016.002 · Obtain Capabilities: Generative AI", value: AML.T0016.002 }
+          - { label: "AML.T0016.003 · Obtain Capabilities: Exploits", value: AML.T0016.003 }
+          - { label: "AML.T0016.004 · Obtain Capabilities: AI Agent Tools", value: AML.T0016.004 }
+          - { label: "AML.T0017 · Develop Capabilities", value: AML.T0017 }
+          - { label: "AML.T0017.000 · Develop Capabilities: Adversarial AI Attacks", value: AML.T0017.000 }
+          - { label: "AML.T0017.001 · Develop Capabilities: Autonomous Exploit Development", value: AML.T0017.001 }
+          - { label: "AML.T0017.002 · Develop Capabilities: AI Agent Tools", value: AML.T0017.002 }
+          - { label: "AML.T0018 · Manipulate AI Model", value: AML.T0018 }
+          - { label: "AML.T0018.000 · Manipulate AI Model: Poison AI Model", value: AML.T0018.000 }
+          - { label: "AML.T0018.001 · Manipulate AI Model: Modify AI Model Architecture", value: AML.T0018.001 }
+          - { label: "AML.T0018.002 · Manipulate AI Model: Embed Malware", value: AML.T0018.002 }
+          - { label: "AML.T0018.003 · Manipulate AI Model: Modify Prompt Construction Logic", value: AML.T0018.003 }
+          - { label: "AML.T0020 · Training Data Poisoning", value: AML.T0020 }
+          - { label: "AML.T0021 · Establish Accounts", value: AML.T0021 }
+          - { label: "AML.T0024 · Exfiltration via AI Inference API", value: AML.T0024 }
+          - { label: "AML.T0024.000 · Exfiltration via AI Inference API: Infer Training Data Membership", value: AML.T0024.000 }
+          - { label: "AML.T0024.001 · Exfiltration via AI Inference API: Invert AI Model", value: AML.T0024.001 }
+          - { label: "AML.T0024.002 · Exfiltration via AI Inference API: Extract AI Model", value: AML.T0024.002 }
+          - { label: "AML.T0025 · Exfiltration via Cyber Means", value: AML.T0025 }
+          - { label: "AML.T0029 · Denial of AI Service", value: AML.T0029 }
+          - { label: "AML.T0031 · Erode AI Model Integrity", value: AML.T0031 }
+          - { label: "AML.T0034 · Cost Harvesting", value: AML.T0034 }
+          - { label: "AML.T0034.000 · Cost Harvesting: Excessive Queries", value: AML.T0034.000 }
+          - { label: "AML.T0034.001 · Cost Harvesting: Resource-Intensive Queries", value: AML.T0034.001 }
+          - { label: "AML.T0034.002 · Cost Harvesting: Agentic Resource Consumption", value: AML.T0034.002 }
+          - { label: "AML.T0035 · AI Artifact Collection", value: AML.T0035 }
+          - { label: "AML.T0036 · Data from Information Repositories", value: AML.T0036 }
+          - { label: "AML.T0037 · Data from Local System", value: AML.T0037 }
+          - { label: "AML.T0040 · AI Model Inference API Access", value: AML.T0040 }
+          - { label: "AML.T0041 · Physical Environment Access", value: AML.T0041 }
+          - { label: "AML.T0042 · Verify Attack", value: AML.T0042 }
+          - { label: "AML.T0043 · Craft Adversarial Data", value: AML.T0043 }
+          - { label: "AML.T0043.000 · Craft Adversarial Data: White-Box Optimization", value: AML.T0043.000 }
+          - { label: "AML.T0043.001 · Craft Adversarial Data: Black-Box Optimization", value: AML.T0043.001 }
+          - { label: "AML.T0043.002 · Craft Adversarial Data: Black-Box Transfer", value: AML.T0043.002 }
+          - { label: "AML.T0043.003 · Craft Adversarial Data: Manual Modification", value: AML.T0043.003 }
+          - { label: "AML.T0043.004 · Craft Adversarial Data: Insert Backdoor Trigger", value: AML.T0043.004 }
+          - { label: "AML.T0044 · Full AI Model Access", value: AML.T0044 }
+          - { label: "AML.T0046 · Spamming AI System with Chaff Data", value: AML.T0046 }
+          - { label: "AML.T0047 · AI-Enabled Product or Service", value: AML.T0047 }
+          - { label: "AML.T0048 · External Harms", value: AML.T0048 }
+          - { label: "AML.T0048.000 · External Harms: Financial Harm", value: AML.T0048.000 }
+          - { label: "AML.T0048.001 · External Harms: Reputational Harm", value: AML.T0048.001 }
+          - { label: "AML.T0048.002 · External Harms: Societal Harm", value: AML.T0048.002 }
+          - { label: "AML.T0048.003 · External Harms: User Harm", value: AML.T0048.003 }
+          - { label: "AML.T0048.004 · External Harms: AI Intellectual Property Theft", value: AML.T0048.004 }
+          - { label: "AML.T0049 · Exploit Public-Facing Application", value: AML.T0049 }
+          - { label: "AML.T0050 · Command and Scripting Interpreter", value: AML.T0050 }
+          - { label: "AML.T0051 · LLM Prompt Injection", value: AML.T0051 }
+          - { label: "AML.T0051.000 · LLM Prompt Injection: Direct", value: AML.T0051.000 }
+          - { label: "AML.T0051.001 · LLM Prompt Injection: Indirect", value: AML.T0051.001 }
+          - { label: "AML.T0051.002 · LLM Prompt Injection: Triggered", value: AML.T0051.002 }
+          - { label: "AML.T0052 · Phishing", value: AML.T0052 }
+          - { label: "AML.T0052.000 · Phishing: Spearphishing via Social Engineering LLM", value: AML.T0052.000 }
+          - { label: "AML.T0052.001 · Phishing: Deepfake-Assisted Phishing", value: AML.T0052.001 }
+          - { label: "AML.T0053 · AI Agent Tool Invocation", value: AML.T0053 }
+          - { label: "AML.T0054 · LLM Jailbreak", value: AML.T0054 }
+          - { label: "AML.T0055 · Unsecured Credentials", value: AML.T0055 }
+          - { label: "AML.T0056 · Extract LLM System Prompt", value: AML.T0056 }
+          - { label: "AML.T0057 · LLM Data Leakage", value: AML.T0057 }
+          - { label: "AML.T0059 · Erode Dataset Integrity", value: AML.T0059 }
+          - { label: "AML.T0060 · Publish Hallucinated Entities", value: AML.T0060 }
+          - { label: "AML.T0061 · LLM Prompt Self-Replication", value: AML.T0061 }
+          - { label: "AML.T0062 · Discover LLM Hallucinations", value: AML.T0062 }
+          - { label: "AML.T0063 · Discover AI Model Outputs", value: AML.T0063 }
+          - { label: "AML.T0064 · Gather RAG-Indexed Targets", value: AML.T0064 }
+          - { label: "AML.T0065 · LLM Prompt Crafting", value: AML.T0065 }
+          - { label: "AML.T0066 · Retrieval Content Crafting", value: AML.T0066 }
+          - { label: "AML.T0067 · LLM Trusted Output Components Manipulation", value: AML.T0067 }
+          - { label: "AML.T0067.000 · LLM Trusted Output Components Manipulation: Citations", value: AML.T0067.000 }
+          - { label: "AML.T0068 · LLM Prompt Obfuscation", value: AML.T0068 }
+          - { label: "AML.T0069 · Discover LLM System Information", value: AML.T0069 }
+          - { label: "AML.T0069.000 · Discover LLM System Information: Special Character Sets", value: AML.T0069.000 }
+          - { label: "AML.T0069.001 · Discover LLM System Information: System Instruction Keywords", value: AML.T0069.001 }
+          - { label: "AML.T0069.002 · Discover LLM System Information: System Prompt", value: AML.T0069.002 }
+          - { label: "AML.T0070 · RAG Poisoning", value: AML.T0070 }
+          - { label: "AML.T0071 · False RAG Entry Injection", value: AML.T0071 }
+          - { label: "AML.T0072 · Cyber Communication Channel", value: AML.T0072 }
+          - { label: "AML.T0073 · Impersonation", value: AML.T0073 }
+          - { label: "AML.T0074 · Masquerading", value: AML.T0074 }
+          - { label: "AML.T0075 · Enterprise Resource Discovery", value: AML.T0075 }
+          - { label: "AML.T0076 · Corrupt AI Model", value: AML.T0076 }
+          - { label: "AML.T0077 · LLM Response Rendering", value: AML.T0077 }
+          - { label: "AML.T0078 · Drive-by Compromise", value: AML.T0078 }
+          - { label: "AML.T0079 · Stage Capabilities", value: AML.T0079 }
+          - { label: "AML.T0080 · AI Agent Context Poisoning", value: AML.T0080 }
+          - { label: "AML.T0080.000 · AI Agent Context Poisoning: Memory", value: AML.T0080.000 }
+          - { label: "AML.T0080.001 · AI Agent Context Poisoning: Thread", value: AML.T0080.001 }
+          - { label: "AML.T0081 · Modify AI Agent Configuration", value: AML.T0081 }
+          - { label: "AML.T0082 · RAG Credential Harvesting", value: AML.T0082 }
+          - { label: "AML.T0083 · Credentials from AI Agent Configuration", value: AML.T0083 }
+          - { label: "AML.T0084 · Discover AI Agent Configuration", value: AML.T0084 }
+          - { label: "AML.T0084.000 · Discover AI Agent Configuration: Embedded Knowledge", value: AML.T0084.000 }
+          - { label: "AML.T0084.001 · Discover AI Agent Configuration: Tool Definitions", value: AML.T0084.001 }
+          - { label: "AML.T0084.002 · Discover AI Agent Configuration: Activation Triggers", value: AML.T0084.002 }
+          - { label: "AML.T0084.003 · Discover AI Agent Configuration: Call Chains", value: AML.T0084.003 }
+          - { label: "AML.T0085 · Data from AI Services", value: AML.T0085 }
+          - { label: "AML.T0085.000 · Data from AI Services: RAG Databases", value: AML.T0085.000 }
+          - { label: "AML.T0085.001 · Data from AI Services: AI Agent Tools", value: AML.T0085.001 }
+          - { label: "AML.T0086 · Exfiltration via AI Agent Tool Invocation", value: AML.T0086 }
+          - { label: "AML.T0087 · Gather Victim Identity Information", value: AML.T0087 }
+          - { label: "AML.T0088 · Generate Deepfakes", value: AML.T0088 }
+          - { label: "AML.T0089 · Enterprise Environment Discovery", value: AML.T0089 }
+          - { label: "AML.T0090 · OS Credential Dumping", value: AML.T0090 }
+          - { label: "AML.T0091 · Use Alternate Authentication Material", value: AML.T0091 }
+          - { label: "AML.T0091.000 · Use Alternate Authentication Material: Application Access Token", value: AML.T0091.000 }
+          - { label: "AML.T0091.001 · Use Alternate Authentication Material: Web Session Cookie", value: AML.T0091.001 }
+          - { label: "AML.T0092 · Manipulate User LLM Chat History", value: AML.T0092 }
+          - { label: "AML.T0093 · Prompt Infiltration via Public-Facing Application", value: AML.T0093 }
+          - { label: "AML.T0094 · Delay Execution of LLM Instructions", value: AML.T0094 }
+          - { label: "AML.T0095 · Search Open Websites/Domains", value: AML.T0095 }
+          - { label: "AML.T0095.000 · Search Open Websites/Domains: Code Repositories", value: AML.T0095.000 }
+          - { label: "AML.T0096 · AI Service API", value: AML.T0096 }
+          - { label: "AML.T0097 · Virtualization/Sandbox Evasion", value: AML.T0097 }
+          - { label: "AML.T0098 · AI Agent Tool Credential Harvesting", value: AML.T0098 }
+          - { label: "AML.T0099 · AI Agent Tool Data Poisoning", value: AML.T0099 }
+          - { label: "AML.T0100 · AI Agent Clickbait", value: AML.T0100 }
+          - { label: "AML.T0101 · Data Destruction via AI Agent Tool Invocation", value: AML.T0101 }
+          - { label: "AML.T0102 · Generate Malicious Commands", value: AML.T0102 }
+          - { label: "AML.T0103 · Deploy AI Agent", value: AML.T0103 }
+          - { label: "AML.T0105 · Escape to Host", value: AML.T0105 }
+          - { label: "AML.T0106 · Exploitation for Credential Access", value: AML.T0106 }
+          - { label: "AML.T0107 · Exploitation for Defense Evasion", value: AML.T0107 }
+          - { label: "AML.T0108 · AI Agent", value: AML.T0108 }
+          - { label: "AML.T0109 · AI Supply Chain Rug Pull", value: AML.T0109 }
+          - { label: "AML.T0110 · AI Agent Tool Poisoning", value: AML.T0110 }
+          - { label: "AML.T0110.000 · AI Agent Tool Poisoning: Definition and Instructions", value: AML.T0110.000 }
+          - { label: "AML.T0110.001 · AI Agent Tool Poisoning: Implementation", value: AML.T0110.001 }
+          - { label: "AML.T0110.002 · AI Agent Tool Poisoning: Runtime Response", value: AML.T0110.002 }
+          - { label: "AML.T0111 · AI Supply Chain Reputation Inflation", value: AML.T0111 }
+          - { label: "AML.T0112 · Machine Compromise", value: AML.T0112 }
+          - { label: "AML.T0112.000 · Machine Compromise: Local AI Agent", value: AML.T0112.000 }
+          - { label: "AML.T0112.001 · Machine Compromise: AI Artifacts", value: AML.T0112.001 }
+          - { label: "AML.T0113 · Steal Web Session Cookie", value: AML.T0113 }
+          - { label: "AML.T0114 · AI Service Web Interface", value: AML.T0114 }
+          - { label: "AML.T0115 · Publish Poisoned AI Artifacts", value: AML.T0115 }
+          - { label: "AML.T0115.000 · Publish Poisoned AI Artifacts: Datasets", value: AML.T0115.000 }
+          - { label: "AML.T0115.001 · Publish Poisoned AI Artifacts: Models", value: AML.T0115.001 }
+          - { label: "AML.T0115.002 · Publish Poisoned AI Artifacts: AI Agent Tools", value: AML.T0115.002 }
+          - { label: "AML.T0116 · Autonomous Reconnaissance", value: AML.T0116 }
+          - { label: "AML.T0117 · Autonomous Attack-Path Adaptation", value: AML.T0117 }
+          - { label: "AML.T0118 · Autonomous AI Agent Communication", value: AML.T0118 }
+          - { label: "AML.T0118.000 · Autonomous AI Agent Communication: Communication via Shared Artifacts", value: AML.T0118.000 }
+          - { label: "AML.T0118.001 · Autonomous AI Agent Communication: Direct Agent Communication", value: AML.T0118.001 }
+          - { label: "AML.T0119 · Exploit Automated Artifact Processing Pipeline", value: AML.T0119 }
+          - { label: "AML.T0120 · AI Artifact Repository", value: AML.T0120 }
+          - { label: "AML.T0121 · AI Agent Environment Reconstruction", value: AML.T0121 }
+          - { label: "AML.T0122 · Exploitation of Remote Services", value: AML.T0122 }
+          - { label: "AML.T0123 · Obfuscated Files or Information", value: AML.T0123 }
+          - { label: "AML.T0124 · Autonomous Attack Orchestration", value: AML.T0124 }
+          - { label: "AML.T0125 · Create Account", value: AML.T0125 }
+          - { label: "AML.T0126 · Automated Collection", value: AML.T0126 }
+          - { label: "AML.T0127 · Data Staged", value: AML.T0127 }
+          - { label: "AML.T0128 · Compromise Infrastructure", value: AML.T0128 }
+          - { label: "AML.T0129 · Triggers in Multimodal Inputs", value: AML.T0129 }
+          - { label: "AML.T0130 · AI Agent Response Biasing", value: AML.T0130 }
+          - { label: "AML.T0131 · Crafted AI Assistant Links", value: AML.T0131 }
+          - { label: "AML.T0132 · Misconfigured or Publicly Exposed AI Services", value: AML.T0132 }
+          - { label: "AML.T0133 · Discover AI Agent Runtime Capabilities", value: AML.T0133 }
+          - { label: "AML.T0134 · AI Targeted Cloaking", value: AML.T0134 }
+          # ATLAS-OPTIONS-END
+      - name: tags
+        label: Etiketler
+        widget: list
+        required: false
+        i18n: duplicate
+        hint: "Serbest etiketler, virgülle ayır. ör. copilot, e-posta, zero-click"
+      - name: chain
+        label: Saldırı zinciri
+        label_singular: Adım
+        widget: list
+        required: false
+        i18n: true
+        summary: "{{fields.attack}}"
+        hint: "4-6 adım. Her adımda saldırının o hamlesi ve zinciri orada koparacak savunma."
+        fields:
+          - { name: attack, label: Saldırı adımı, widget: text }
+          - { name: defense, label: Burada kırılırdı, widget: text }
+      - name: sources
+        label: Kaynaklar
+        label_singular: Kaynak
+        widget: list
+        i18n: duplicate
+        summary: "{{fields.title}}"
+        hint: "Yazının sonunda [1], [2]... diye numaralanır. Metin içinde [[1]](#src-1) ile bağlan."
+        fields:
+          - { name: title, label: Başlık, widget: string }
+          - { name: url, label: URL, widget: string, pattern: ["^https?://", "http:// ya da https:// ile başlamalı"] }
+          - { name: publisher, label: Yayıncı, widget: string, required: false }
+          - { name: date, label: Tarih, widget: string, required: false, hint: "ör. 2025-06-11 ya da 2025-09" }
+      - name: body
+        label: Metin
+        widget: markdown
+        modes: [raw, rich_text]
+        i18n: true
+        hint: "Altı bölüm sabit sırada kalmalı; renkler sıradan gelir (2-4 kırmızı, 5 mavi, 6 mor). İngilizce başlıklar: What happened / The threat / Where the flaw was / Attacker's view / How it could have been fixed / What I learned. Kaynaklar yukarıdaki alandan otomatik eklenir."
+        default: |
+          ## Ne oldu
+
+          Kısa özet. Kaynağa bağlanmak için: [[1]](#src-1)
+
+          | Tarih | Olay |
+          |---|---|
+          | | |
+
+          ## Tehdit
+
+          - **Saldırgan kim:**
+          - **Neye ulaşıyor:**
+          - **En kötü senaryo:**
+
+          ## Açık neredeydi
+
+          Tam teknik zayıflık; ardından OWASP / ATLAS eşleme tablosu.
+
+          ## Saldırgan gözüyle
+
+          Saldırı nasıl işledi, saldırgan sırada neyi dener. Çalışan payload yazma.
+
+          ## Nasıl düzelirdi
+
+          ### a) Savunan taraf
+
+          ### b) AI tarafı: ajan korumaları, yetkiler, izleme
+
+          ## Ne öğrendim
+
+          -
+
+  # ------------------------------------------------------------------ Sayfalar
+  - name: pages
+    label: Sayfalar
+    i18n: true
+    files:
+      - name: about
+        label: Hakkında
+        file: content/about.{{locale}}.md
+        i18n: true
+        fields:
+          - { name: title, label: Başlık, widget: string, i18n: true }
+          - { name: lede, label: Giriş cümlesi, widget: text, i18n: true }
+          - { name: body, label: Metin, widget: markdown, modes: [raw, rich_text], i18n: true, hint: "Bağlantılar listesinin altındaki {.linkrow} satırını silme; butonlu görünümü o veriyor." }

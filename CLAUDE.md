@@ -4,9 +4,9 @@ Kullanıcı bir haber ya da olay verip "bunu yaz" dediğinde izlenecek kurallar.
 
 ## Akış
 1. Olayı birincil kaynaklardan doğrula: üretici bildirimi (MSRC, GHSA, vendor blog), CVE kaydı (`https://cveawg.mitre.org/api/cve/<ID>` JSON'u CVSS ve CWE için güvenilir), araştırmacının kendi yazısı, varsa makale. Yalnızca ikincil haber sitesine dayanan iddiayı yazma ya da "bildirildi" diye işaretle.
-2. `content/incidents/<kisa-ad>/index.tr.md` ve `index.en.md` yaz. İkisi aynı ön bilgiyi taşır (yalnızca `title`, `summary`, kaynak başlıkları çevrilir).
+2. `content/incidents/<kisa-ad>/index.tr.md` ve `index.en.md` yaz. İkisi aynı ön bilgiyi taşır; yalnızca `title`, `summary`, `chain` ve metin çevrilir. `sources`, `tags` ve diğer tüm alanlar iki dosyada birebir aynı olmalı (CMS'te `i18n: duplicate`; farklı olursa paneldeki ilk kayıt TR değerini EN'e yazar).
 3. Altı bölüm, bu sırayla ve bu başlıklarla (CSS numaralandırıyor, başka `##` ekleme):
-   TR: Ne oldu / Tehdit / Açık nerede / Saldırgan gözü / Nasıl düzelirdi / Ne öğrendim
+   TR: Ne oldu / Tehdit / Açık neredeydi / Saldırgan gözüyle / Nasıl düzelirdi / Ne öğrendim
    EN: What happened / The threat / Where the flaw was / Attacker's view / How it could have been fixed / What I learned
    "Nasıl düzelirdi" altında iki `###`: a) savunan taraf, b) AI tarafı (ajan korumaları, yetkiler, izleme).
 3b. Ön bilgideki `chain:` listesi yazının imza şemasıdır: 4-6 adım, her adımda `attack` (saldırının o adımı) ve `defense` (zinciri o adımda kıracak kontrol). Kısa ve somut tut; iki dilde de doldur.
@@ -32,6 +32,13 @@ Kullanıcı bir haber ya da olay verip "bunu yaz" dediğinde izlenecek kurallar.
 - Fontlar `static/fonts/` altında gömülü (OFL); dışarıdan font/betik yükleme, CSP sıkı.
 - Şablonlarda `data-on…` ile başlayan öznitelik kullanma: Go html/template `data-` önekini atıp `on*` olay özniteliği sanıyor ve değeri JS dizesi olarak tırnaklıyor.
 - İngilizce sayılı metinler i18n'de `one`/`other` biçimli; `i18n "anahtar" sayı` ile çağır.
+
+## Yönetim paneli (irzubal.com/admin)
+- Sveltia CMS, `static/admin/`. Şema `static/admin/config.yml`; alan adları ön bilgiyle birebir aynı, yeni alan eklersen ikisini birlikte güncelle.
+- ATLAS seçim listesi üretilir: `data/atlas.yaml` değişince `python tools/cms-atlas-secenekleri.py`.
+- Sveltia sürümü sabit + SRI: güncellemek için `sh tools/sveltia-guncelle.sh [sürüm]` (unpkg ile jsDelivr özetlerini karşılaştırır).
+- `/admin/*` kendi CSP'sini `netlify.toml`'dan alır; genel sitenin CSP'sini gevşetme.
+- Panelde metin editörü ham Markdown modunda açılır; zengin metin modu `[[1]](#src-1)`, tablo ve `{.linkrow}` sözdizimini bozabilir.
 
 ## Yayın
 - Netlify, GitHub deposuna bağlı; push = yayın. DNS Squarespace'te, MX/TXT kayıtlarına asla dokunma.

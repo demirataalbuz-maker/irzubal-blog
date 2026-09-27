@@ -47,6 +47,7 @@ tags_none: "Bu filtreye uyan olay yok."
 group_buckets: "Kategori"
 group_owasp: "OWASP LLM Top 10"
 group_atlas: "MITRE ATLAS"
+group_tags: "Etiketler"
 group_severity: "Tehdit seviyesi"
 
 bucket_ai-as-attacker: "Saldırgan olarak AI"

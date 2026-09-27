@@ -12,6 +12,7 @@ cve: ""                          # varsa; yoksa sil
 buckets: ["ai-system-vulnerability"]   # ai-as-attacker | ai-system-vulnerability
 owasp: ["LLM01"]                 # data/owasp.yaml'daki kimlikler
 atlas: ["AML.T0051.001"]         # data/atlas.yaml'daki kimlikler
+tags: []                         # serbest etiketler
 chain:                           # saldırı zinciri: her adımda saldırı + onu kıracak savunma
   - attack: ""
     defense: ""
@@ -36,11 +37,11 @@ Kısa özet ve zaman çizelgesi. Metin içinde kaynağa bağlan: [[1]](#src-1)
 - **Neye ulaşıyor:**
 - **En kötü senaryo:**
 
-## Açık nerede
+## Açık neredeydi
 
 Tam teknik zayıflık, ardından OWASP / ATLAS eşleme tablosu.
 
-## Saldırgan gözü
+## Saldırgan gözüyle
 
 Saldırı nasıl işledi, saldırgan sırada neyi dener. Çalışan payload yok.
 

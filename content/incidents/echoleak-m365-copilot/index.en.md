@@ -5,12 +5,13 @@ summary: "Aim Labs showed that M365 Copilot could follow hidden instructions in 
 incident_date: 2025-06-11
 org: "Microsoft 365 Copilot"
 severity: critical
-cvss: "9.3"
+cvss: 9.3
 status: confirmed
 cve: "CVE-2025-32711"
 buckets: ["ai-system-vulnerability"]
 owasp: ["LLM01", "LLM02", "LLM05"]
 atlas: ["AML.T0051.001", "AML.T0068", "AML.T0057", "AML.T0077"]
+tags: ["copilot", "zero-click", "rag", "markdown"]
 chain:
   - attack: "The attacker sends an email that reads like an ordinary work note. The instructions are embedded in sentences addressed to the human reader."
     defense: "Email from outside the organisation never shares a context with internal data, or is explicitly marked as an untrusted source."
@@ -28,11 +29,11 @@ sources:
     date: "2025-06-11"
     url: "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711"
   - publisher: "CVE Program"
-    title: "CVE-2025-32711 record (CVSS 3.1 vector, CWE-74)"
+    title: "CVE Record: CVE-2025-32711"
     date: "2025-06-11"
     url: "https://www.cve.org/CVERecord?id=CVE-2025-32711"
   - publisher: "Aim Labs (Aim Security)"
-    title: "EchoLeak: original disclosure and attack chain"
+    title: "EchoLeak (Aim Labs disclosure)"
     date: "2025-06-11"
     url: "https://www.aim.security/lp/aim-labs-echoleak-blogpost"
   - publisher: "Reddy & Gujral, arXiv:2509.10540"

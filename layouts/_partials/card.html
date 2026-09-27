@@ -2,9 +2,10 @@
 {{- $p := . }}
 {{- $sev := $p.Params.severity | default "medium" }}
 <article class="story"
-  data-buckets="{{ delimit ($p.Params.buckets | default slice) " " }}"
-  data-owasp="{{ delimit ($p.Params.owasp | default slice) " " }}"
-  data-atlas="{{ delimit ($p.Params.atlas | default slice) " " }}"
+  data-buckets="{{ delimit ($p.Params.buckets | default slice) "|" }}"
+  data-owasp="{{ delimit ($p.Params.owasp | default slice) "|" }}"
+  data-atlas="{{ delimit ($p.Params.atlas | default slice) "|" }}"
+  data-tags="{{ delimit ($p.Params.tags | default slice) "|" }}"
   data-severity="{{ $sev }}">
   <div class="kicker">
     {{- range first 1 ($p.Params.buckets | default slice) }}

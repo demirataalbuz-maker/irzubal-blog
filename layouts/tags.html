@@ -1,13 +1,14 @@
 {{ define "main" }}
 {{- $posts := where site.RegularPages "Section" "incidents" }}
-{{- $atlasUsed := slice }}
-{{- range $posts }}{{ $atlasUsed = $atlasUsed | append (.Params.atlas | default slice) }}{{ end }}
+{{- $atlasUsed := slice }}{{ $tagsUsed := slice }}
+{{- range $posts }}{{ $atlasUsed = $atlasUsed | append (.Params.atlas | default slice) }}{{ $tagsUsed = $tagsUsed | append (.Params.tags | default slice) }}{{ end }}
 {{- $owaspKeys := slice }}{{ range $k, $_ := hugo.Data.owasp }}{{ $owaspKeys = $owaspKeys | append $k }}{{ end }}
 {{- $groups := dict
   "buckets" (slice "ai-as-attacker" "ai-system-vulnerability")
   "owasp" $owaspKeys
   "severity" (slice "critical" "high" "medium" "low")
-  "atlas" ($atlasUsed | uniq | sort) }}
+  "atlas" ($atlasUsed | uniq | sort)
+  "tags" ($tagsUsed | uniq | sort) }}
 
 <section class="wrap page-head">
   <p class="dateline"><span>{{ len $posts }} {{ i18n "stat_incidents" (len $posts) }}</span><span>{{ len $owaspKeys }} OWASP</span><span>{{ len ($atlasUsed | uniq) }} ATLAS</span></p>
@@ -17,8 +18,9 @@
 
 <section class="wrap index" data-filter>
   <div class="index-cols">
-    {{- range slice "buckets" "severity" "owasp" "atlas" }}
+    {{- range slice "buckets" "severity" "tags" "owasp" "atlas" }}
     {{- $g := . }}
+    {{- if index $groups $g }}
     <fieldset class="idx-group idx-{{ $g }}">
       <legend>{{ i18n (printf "group_%s" $g) }}</legend>
       <ul role="list">
@@ -31,6 +33,7 @@
           {{- if eq $g "severity" }}{{ $name = i18n (printf "severity_%s" $v) }}{{ end }}
           {{- if eq $g "owasp" }}{{ $key = $v }}{{ $name = index hugo.Data.owasp $v site.Language.Lang }}{{ end }}
           {{- if eq $g "atlas" }}{{ $key = $v }}{{ $name = index hugo.Data.atlas $v }}{{ end }}
+          {{- if eq $g "tags" }}{{ $name = printf "#%s" $v }}{{ end }}
         <li>
           <button type="button" class="idx-item" data-group="{{ $g }}" data-value="{{ $v }}" aria-pressed="false"{{ if eq $n 0 }} disabled{{ end }}>
             {{- if eq $g "severity" }}{{ partial "sevmeter.html" $v }}{{ else }}
@@ -44,6 +47,7 @@
         {{- end }}
       </ul>
     </fieldset>
+    {{- end }}
     {{- end }}
   </div>
   <div class="filter-bar">
