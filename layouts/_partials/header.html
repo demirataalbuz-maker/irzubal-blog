@@ -17,13 +17,6 @@
       {{- end }}
     </nav>
     <div class="controls">
-      <div class="lens" role="group" aria-label="{{ i18n "lens" }}">
-        {{- range slice "red" "purple" "blue" }}
-        <button type="button" class="lens-btn lens-{{ . }}" data-lens-set="{{ . }}" aria-pressed="{{ if eq . "purple" }}true{{ else }}false{{ end }}" title="{{ i18n (printf "lens_%s_hint" .) }}">
-          <i aria-hidden="true"></i><span>{{ i18n (printf "lens_%s" .) }}</span>
-        </button>
-        {{- end }}
-      </div>
       <nav class="lang" aria-label="{{ i18n "lang_switch" }}">
         {{- /* Çevirisi varsa aynı yazıya, yoksa o dilin ana sayfasına git. */}}
         {{- range hugo.Sites }}

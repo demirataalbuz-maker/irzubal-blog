@@ -11,20 +11,6 @@
     });
   });
 
-  // Mercek: kırmızı (saldırı), mor (ikisi), mavi (savunma)
-  var lensBtns = document.querySelectorAll("[data-lens-set]");
-  function setLens(l) {
-    root.setAttribute("data-lens", l);
-    lensBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lens-set") === l)); });
-  }
-  lensBtns.forEach(function (b) {
-    b.addEventListener("click", function () {
-      var l = b.getAttribute("data-lens-set");
-      setLens(l);
-      save("lens", l);
-    });
-  });
-  setLens(root.getAttribute("data-lens") || "purple");
 
   // Dizin filtresi: grup içinde "ya da", gruplar arasında "ve".
   var filter = document.querySelector("[data-filter]");
