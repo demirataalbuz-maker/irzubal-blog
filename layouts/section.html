@@ -1,6 +1,6 @@
 {{ define "main" }}
 <section class="wrap page-head">
-  <p class="dateline"><span>{{ len .Pages }} {{ i18n "stat_incidents" }}</span></p>
+  <p class="dateline"><span>{{ len .Pages }} {{ i18n "stat_incidents" (len .Pages) }}</span></p>
   <h1 class="page-title">{{ .Title }}</h1>
   <p class="page-lede">{{ i18n "incidents_lede" }}</p>
 </section>

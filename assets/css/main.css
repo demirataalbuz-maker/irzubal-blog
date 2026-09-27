@@ -152,7 +152,8 @@ a:hover { color: var(--lens); }
 .topbar-row { display: flex; align-items: center; gap: 12px 24px; min-height: 58px; flex-wrap: wrap; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
 .brand:hover { color: var(--ink); }
-.brand-word { font-family: var(--f-display); font-weight: 800; font-stretch: 72%; font-size: 23px; letter-spacing: 0.01em; line-height: 1; }
+/* Geniş ve kalın: dar manşetlerle kontrast; darda "i" noktası gövdeye yapışıyordu */
+.brand-word { font-family: var(--f-display); font-weight: 750; font-stretch: 110%; font-size: 21px; letter-spacing: 0.005em; line-height: 1; }
 .mark { width: 30px; height: 22px; flex: none; }
 .mark circle { mix-blend-mode: var(--blend); transition: transform 0.4s var(--ease), opacity 0.3s; }
 .mark-r { fill: var(--red); }
@@ -197,8 +198,13 @@ a:hover { color: var(--lens); }
 @media (max-width: 520px) {
   .lens-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .lens-btn { padding: 8px 9px; }
-  .brand-word { font-size: 21px; }
+  .topbar-row { column-gap: 10px; }
+  .brand { gap: 7px; }
+  .mark { width: 26px; height: 19px; }
+  .brand-word { font-size: 17px; }
   .controls { gap: 6px; }
+  .lang a { padding: 6px 5px; }
+  .edition { padding: 6px 7px; }
 }
 
 /* ---------- Dateline (gazete künye satırı) ---------- */
@@ -346,7 +352,7 @@ a:hover { color: var(--lens); }
 .post-head { padding-top: clamp(20px, 3vw, 36px); }
 .post-head .kicker { margin-top: 26px; }
 .post-title {
-  margin: 0 0 18px; max-width: 17ch;
+  margin: 0 0 18px; max-width: 21ch;
   font-family: var(--f-display); font-weight: 850; font-stretch: 66%;
   font-size: clamp(42px, 7vw, 100px); line-height: 0.9; letter-spacing: -0.014em;
 }
@@ -531,7 +537,7 @@ a:hover { color: var(--lens); }
 .site-footer { border-top: 4px solid var(--ink); margin-top: auto; padding-block: 22px 28px; }
 .footer-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px 32px; align-items: center; }
 .footer-row p { margin: 0; }
-.footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-display); font-weight: 800; font-stretch: 72%; font-size: 20px; }
+.footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-display); font-weight: 750; font-stretch: 110%; font-size: 19px; }
 .footer-note { font-size: 14.5px; color: var(--ink-soft); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11px; color: var(--ink-faint); }
 .footer-links a { text-decoration: none; color: var(--ink-soft); }

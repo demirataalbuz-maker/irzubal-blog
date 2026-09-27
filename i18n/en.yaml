@@ -18,9 +18,15 @@ edition_toggle: "Night / day edition"
 
 issue: "Issue"
 city: "Istanbul"
-stat_incidents: "incidents"
-stat_owasp: "OWASP items"
-stat_atlas: "ATLAS techniques"
+stat_incidents:
+  one: "incident"
+  other: "incidents"
+stat_owasp:
+  one: "OWASP item"
+  other: "OWASP items"
+stat_atlas:
+  one: "ATLAS technique"
+  other: "ATLAS techniques"
 
 home_title: 'How AI systems get <em class="w-red">broken</em>, and how to <em class="w-blue">defend</em> them.'
 home_lede: "I print real AI security incidents in two inks: red for the flaw the attacker found, blue for the control the defender missed. Where they overlap it turns purple, which is what purple teaming is. Every analysis is mapped to the OWASP LLM Top 10 and MITRE ATLAS."
@@ -57,7 +63,9 @@ chain_note: "Attack steps on the left; on the right, the defense that would cut 
 incidents_lede: "Every incident analysis, newest first."
 tags_lede: "Filter incidents by category, OWASP item, ATLAS technique or threat level. Several picks in one group mean \"or\"; picks across groups mean \"and\". Items at zero have not been covered yet."
 tags_clear: "Clear"
-tags_count: "incidents"
+tags_count:
+  one: "incident"
+  other: "incidents"
 tags_none: "No incidents match this filter."
 
 group_buckets: "Category"

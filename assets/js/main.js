@@ -32,6 +32,7 @@
   var items = Array.prototype.slice.call(filter.querySelectorAll("[data-group]"));
   var cards = Array.prototype.slice.call(document.querySelectorAll("[data-results] .story"));
   var countEl = filter.querySelector("[data-count]");
+  var labelEl = filter.querySelector("[data-count-label]");
   var emptyEl = document.querySelector("[data-empty]");
 
   function selected() {
@@ -57,6 +58,7 @@
       if (ok) shown++;
     });
     countEl.textContent = shown;
+    if (labelEl) labelEl.textContent = labelEl.getAttribute(shown === 1 ? "data-sg" : "data-pl");
     emptyEl.hidden = shown !== 0;
     if (updateUrl && window.history && history.replaceState) {
       var params = new URLSearchParams();

@@ -10,7 +10,7 @@
       <span>{{ i18n "issue" }} {{ printf "%03d" (len $posts) }}</span>
       {{- range first 1 $posts }}<span>{{ .Date | time.Format ":date_long" }}</span>{{ end }}
       <span>{{ i18n "city" }}</span>
-      <span class="dl-stats">{{ len $posts }} {{ i18n "stat_incidents" }} / {{ len (uniq $owasp) }} {{ i18n "stat_owasp" }} / {{ len (uniq $atlas) }} {{ i18n "stat_atlas" }}</span>
+      <span class="dl-stats">{{ len $posts }} {{ i18n "stat_incidents" (len $posts) }} / {{ len (uniq $owasp) }} {{ i18n "stat_owasp" (len (uniq $owasp)) }} / {{ len (uniq $atlas) }} {{ i18n "stat_atlas" (len (uniq $atlas)) }}</span>
     </p>
     <h1 class="masthead">
       <span class="sr-only">irzubal</span>

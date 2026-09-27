@@ -10,7 +10,7 @@
   "atlas" ($atlasUsed | uniq | sort) }}
 
 <section class="wrap page-head">
-  <p class="dateline"><span>{{ len $posts }} {{ i18n "stat_incidents" }}</span><span>{{ len $owaspKeys }} OWASP</span><span>{{ len ($atlasUsed | uniq) }} ATLAS</span></p>
+  <p class="dateline"><span>{{ len $posts }} {{ i18n "stat_incidents" (len $posts) }}</span><span>{{ len $owaspKeys }} OWASP</span><span>{{ len ($atlasUsed | uniq) }} ATLAS</span></p>
   <h1 class="page-title">{{ .Title }}</h1>
   <p class="page-lede">{{ i18n "tags_lede" }}</p>
 </section>
@@ -47,7 +47,7 @@
     {{- end }}
   </div>
   <div class="filter-bar">
-    <p aria-live="polite"><span data-count>{{ len $posts }}</span> {{ i18n "tags_count" }}</p>
+    <p aria-live="polite"><span data-count>{{ len $posts }}</span> <span data-count-label data-sg="{{ i18n "tags_count" 1 }}" data-pl="{{ i18n "tags_count" 2 }}">{{ i18n "tags_count" (len $posts) }}</span></p>
     <button type="button" class="linkbtn" data-clear>{{ i18n "tags_clear" }}</button>
   </div>
 </section>
